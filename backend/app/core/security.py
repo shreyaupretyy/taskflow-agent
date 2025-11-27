@@ -9,7 +9,11 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.models.user import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Use argon2 instead of bcrypt to avoid compatibility issues
+pwd_context = CryptContext(
+    schemes=["argon2", "bcrypt"], 
+    deprecated="auto"
+)
 security = HTTPBearer()
 
 
