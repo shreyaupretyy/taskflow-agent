@@ -32,8 +32,12 @@ class Settings(BaseSettings):
     CHROMA_PERSIST_DIR: str = "./chroma_data"
     
     # Celery
+    USE_CELERY: bool = False  # Set to True when Redis is available
     CELERY_BROKER_URL: str = "redis://localhost:6379/0"
     CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
+    
+    # Demo mode (when Ollama/Redis not available)
+    DEMO_MODE: bool = True  # Set to False when Ollama is running
     
     # Email
     SMTP_HOST: str = "smtp.gmail.com"

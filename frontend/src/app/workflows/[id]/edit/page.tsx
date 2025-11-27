@@ -184,7 +184,14 @@ export default function EditWorkflowPage() {
       });
 
       setExecutionResult(result.data);
-      alert('Workflow execution started! Check the results below.');
+      
+      if (result.data.status === 'completed') {
+        alert('✓ Workflow completed successfully! Check results below.');
+      } else if (result.data.status === 'failed') {
+        alert('✗ Workflow failed. Check error details below.');
+      } else {
+        alert('Workflow execution started! Status: ' + result.data.status);
+      }
     } catch (err: any) {
       alert(err.response?.data?.detail || 'Failed to execute workflow');
     } finally {
@@ -454,15 +461,51 @@ export default function EditWorkflowPage() {
                   </Button>
 
                   {executionResult && (
-                    <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                      <h4 className="font-medium text-green-900 mb-2">✓ Execution Started</h4>
-                      <div className="text-sm space-y-1">
-                        <p><strong>Execution ID:</strong> {executionResult.id}</p>
-                        <p><strong>Status:</strong> {executionResult.status}</p>
-                        <p className="text-green-700 mt-2">
-                          The workflow is running in the background. Results will be available shortly.
-                        </p>
+                    <div className="mt-4 space-y-3">
+                      <div className={`p-4 border rounded-lg ${
+                        executionResult.status === 'completed' ? 'bg-green-50 border-green-200' :
+                        executionResult.status === 'failed' ? 'bg-red-50 border-red-200' :
+                        executionResult.status === 'running' ? 'bg-blue-50 border-blue-200' :
+                        'bg-yellow-50 border-yellow-200'
+                      }`}>
+                        <h4 className={`font-medium mb-2 ${
+                          executionResult.status === 'completed' ? 'text-green-900' :
+                          executionResult.status === 'failed' ? 'text-red-900' :
+                          executionResult.status === 'running' ? 'text-blue-900' :
+                          'text-yellow-900'
+                        }`}>
+                          {executionResult.status === 'completed' ? '✓ Execution Completed' :
+                           executionResult.status === 'failed' ? '✗ Execution Failed' :
+                           executionResult.status === 'running' ? '⟳ Execution Running' :
+                           '⏱ Execution Pending'}
+                        </h4>
+                        <div className="text-sm space-y-1">
+                          <p><strong>Execution ID:</strong> {executionResult.id}</p>
+                          <p><strong>Status:</strong> {executionResult.status}</p>
+                          {executionResult.started_at && (
+                            <p><strong>Started:</strong> {new Date(executionResult.started_at).toLocaleString()}</p>
+                          )}
+                          {executionResult.completed_at && (
+                            <p><strong>Completed:</strong> {new Date(executionResult.completed_at).toLocaleString()}</p>
+                          )}
+                        </div>
                       </div>
+
+                      {executionResult.output_data && (
+                        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                          <h5 className="font-medium mb-2">Results:</h5>
+                          <pre className="text-xs bg-white p-3 rounded border overflow-auto max-h-96">
+                            {JSON.stringify(executionResult.output_data, null, 2)}
+                          </pre>
+                        </div>
+                      )}
+
+                      {executionResult.error_message && (
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                          <h5 className="font-medium text-red-900 mb-2">Error:</h5>
+                          <p className="text-sm text-red-700">{executionResult.error_message}</p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -70,33 +70,118 @@ export default function DashboardPage() {
 
         <div className="bg-white rounded-lg shadow">
           <div className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 className="text-2xl font-bold mb-2">Choose Your AI Agent</h3>
+            <p className="text-gray-600 mb-6">Select a pre-built AI agent to start automating your tasks</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Email Summarizer Agent */}
               <button
-                onClick={() => router.push('/workflows/create')}
-                className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                onClick={() => router.push('/agents/email-summarizer')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-center">
-                  <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <div className="text-4xl mb-3">📧</div>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-blue-600">Email Summarizer</h4>
+                <p className="text-sm text-gray-600 mt-2">Automatically analyze and summarize emails with priority detection</p>
+                <div className="mt-4 flex items-center text-xs text-blue-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                  <h4 className="mt-2 text-sm font-medium text-gray-900">Create New Workflow</h4>
-                  <p className="mt-1 text-xs text-gray-500">Build an AI-powered workflow</p>
                 </div>
               </button>
-              
+
+              {/* Content Generator Agent */}
               <button
-                onClick={() => router.push('/workflows')}
-                className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                onClick={() => router.push('/agents/content-generator')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-purple-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-center">
-                  <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                <div className="text-4xl mb-3">✍️</div>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-purple-600">Content Generator</h4>
+                <p className="text-sm text-gray-600 mt-2">Research topics and write comprehensive articles and blog posts</p>
+                <div className="mt-4 flex items-center text-xs text-purple-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                  <h4 className="mt-2 text-sm font-medium text-gray-900">View All Workflows</h4>
-                  <p className="mt-1 text-xs text-gray-500">Manage existing workflows</p>
                 </div>
               </button>
+
+              {/* Data Analyzer Agent */}
+              <button
+                onClick={() => router.push('/agents/data-analyzer')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:shadow-lg transition-all text-left group"
+              >
+                <div className="text-4xl mb-3">📊</div>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-green-600">Data Analyzer</h4>
+                <p className="text-sm text-gray-600 mt-2">Extract insights, identify patterns, and generate reports from data</p>
+                <div className="mt-4 flex items-center text-xs text-green-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Customer Support Agent */}
+              <button
+                onClick={() => router.push('/agents/customer-support')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-orange-500 hover:shadow-lg transition-all text-left group"
+              >
+                <div className="text-4xl mb-3">💬</div>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-orange-600">Customer Support</h4>
+                <p className="text-sm text-gray-600 mt-2">Analyze inquiries and generate professional support responses</p>
+                <div className="mt-4 flex items-center text-xs text-orange-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Code Reviewer Agent */}
+              <button
+                onClick={() => router.push('/agents/code-reviewer')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-red-500 hover:shadow-lg transition-all text-left group"
+              >
+                <div className="text-4xl mb-3">👨‍💻</div>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-red-600">Code Reviewer</h4>
+                <p className="text-sm text-gray-600 mt-2">Analyze code for bugs, security issues, and improvements</p>
+                <div className="mt-4 flex items-center text-xs text-red-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Meeting Notes Agent */}
+              <button
+                onClick={() => router.push('/agents/meeting-notes')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:shadow-lg transition-all text-left group"
+              >
+                <div className="text-4xl mb-3">📝</div>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-indigo-600">Meeting Notes</h4>
+                <p className="text-sm text-gray-600 mt-2">Convert meeting transcripts into structured notes with action items</p>
+                <div className="mt-4 flex items-center text-xs text-indigo-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start">
+            <div className="text-2xl mr-3">💡</div>
+            <div>
+              <h4 className="font-semibold text-blue-900">How to Use Agents</h4>
+              <p className="text-sm text-blue-800 mt-1">
+                Click on any agent card above → Enter your input text → Get instant AI-powered results!
+                All agents work in demo mode without requiring additional setup.
+              </p>
             </div>
           </div>
         </div>
