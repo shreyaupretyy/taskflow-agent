@@ -7,13 +7,13 @@ An intelligent AI agent platform that provides pre-built AI agents for common bu
 [![GitHub](https://img.shields.io/badge/GitHub-TaskFlow_Agent-blue?logo=github)](https://github.com/shreyaupretyy/taskflow-agent)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 🎯 Overview
+## Overview
 
 TaskFlow Agent simplifies business automation by providing ready-to-use AI agents powered by Ollama and LLaMA 3.2. No workflow building required - just select an agent, provide your input, and get instant AI-generated results.
 
-## ✨ Features
+## Features
 
-### 🤖 Pre-Built AI Agents
+### Pre-Built AI Agents
 
 - **Email Summarizer** - Analyze emails and extract key information, action items, and priorities
 - **Content Generator** - Create professional content including articles, blogs, and marketing copy
@@ -22,17 +22,17 @@ TaskFlow Agent simplifies business automation by providing ready-to-use AI agent
 - **Customer Support** - Generate professional customer support responses
 - **Meeting Notes** - Convert meeting transcripts into structured notes with action items
 
-### 💡 Key Capabilities
+### Key Capabilities
 
-- ✅ Real AI processing with Ollama (LLaMA 3.2)
-- ✅ Clean, professional UI without distractions
-- ✅ Human-readable reports (not JSON)
-- ✅ Fast response times (3-8 seconds after first load)
-- ✅ Secure JWT authentication
-- ✅ Copy results to clipboard
-- ✅ Demo mode fallback when Ollama is unavailable
+- Real AI processing with Ollama (LLaMA 3.2)
+- Clean, professional UI without distractions
+- Human-readable reports (not JSON)
+- Fast response times (3-8 seconds after first load)
+- Secure JWT authentication
+- Copy results to clipboard
+- Demo mode fallback when Ollama is unavailable
 
-## 📸 Screenshots
+## Screenshots
 
 ### Dashboard
 ![Dashboard](uploads/dashboard.png)
@@ -49,7 +49,7 @@ TaskFlow Agent simplifies business automation by providing ready-to-use AI agent
 ### Code Reviewer
 ![Code Reviewer](uploads/code_reviewer.png)
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend
 - **FastAPI** - High-performance async API framework
@@ -66,7 +66,7 @@ TaskFlow Agent simplifies business automation by providing ready-to-use AI agent
 - **Zustand** - State management
 - **shadcn/ui** - UI components
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -152,7 +152,7 @@ npm run dev
 5. Enter your text and click "Run Agent"
 6. Get AI-generated results in seconds!
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Email Summarizer
 Analyzes emails and provides:
@@ -208,7 +208,7 @@ def calculate(x,y):
     return result
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Backend (.env)
 ```env
@@ -234,7 +234,7 @@ CORS_ORIGINS=["http://localhost:3000", "http://127.0.0.1:3000"]
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 taskflow-agent/
@@ -267,7 +267,7 @@ taskflow-agent/
 └── uploads/                 # Screenshots
 ```
 
-## 🔐 Security
+## Security
 
 - **JWT Authentication** - Secure token-based auth
 - **Password Hashing** - Argon2 for secure password storage
@@ -275,7 +275,7 @@ taskflow-agent/
 - **SQL Injection Protection** - SQLAlchemy ORM
 - **Rate Limiting Ready** - Backend infrastructure in place
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Ollama Not Connected
 **Error:** "Using demo mode - Ollama not connected"
@@ -304,14 +304,14 @@ taskkill /F /IM python.exe  # Windows
 2. Clear browser localStorage
 3. Check backend logs for JWT errors
 
-## 📊 Performance
+## Performance
 
 - **First Request:** 15-30 seconds (model loads into RAM)
 - **Subsequent Requests:** 3-8 seconds
 - **Model Size:** ~2GB (LLaMA 3.2)
 - **Memory Usage:** 4-8GB RAM recommended
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please:
 
@@ -321,24 +321,24 @@ Contributions are welcome! Please:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
+## Links
 
 - **GitHub Repository:** https://github.com/shreyaupretyy/taskflow-agent
 - **Ollama:** https://ollama.ai
 - **LLaMA Models:** https://ai.meta.com/llama/
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Ollama team for local LLM infrastructure
 - Meta for LLaMA models
 - LangChain for agent framework
 - FastAPI and Next.js communities
 
-## 📧 Support
+## Support
 
 For issues and questions:
 - Open an issue on [GitHub](https://github.com/shreyaupretyy/taskflow-agent/issues)
@@ -346,4 +346,4 @@ For issues and questions:
 
 ---
 
-**Built with ❤️ for business automation**
+**Built for business automation**
