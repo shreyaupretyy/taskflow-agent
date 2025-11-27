@@ -40,14 +40,49 @@ export default function AgentInterface({
     setResult(null);
 
     try {
-      // Simulate API call - in demo mode, generate mock results
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Call backend API
+      const token = localStorage.getItem('token');
       
-      // Generate demo results based on agent type
-      const demoResult = generateDemoResult(agentId, input);
-      setResult(demoResult);
+      if (!token) {
+        alert('Not logged in. Please login again.');
+        router.push('/auth/login');
+        return;
+      }
+      
+      const response = await fetch('http://localhost:8000/api/v1/agents/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          agent_id: agentId,
+          input_text: input
+        })
+      });
+
+      if (response.status === 401) {
+        alert('Session expired. Please login again.');
+        localStorage.removeItem('token');
+        router.push('/auth/login');
+        return;
+      }
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData)}`);
+      }
+
+      const data = await response.json();
+      setResult(data);
     } catch (error) {
-      alert('Error executing agent');
+      console.error('Error executing agent:', error);
+      // Fallback to demo mode if API fails
+      const demoResult = generateDemoResult(agentId, input);
+      setResult({
+        ...demoResult,
+        message: 'API connection failed - showing demo results'
+      });
     } finally {
       setLoading(false);
     }
@@ -75,7 +110,7 @@ export default function AgentInterface({
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-4xl">{agentIcon}</span>
+            {agentIcon && <span className="text-4xl">{agentIcon}</span>}
             <h1 className="text-3xl font-bold">{agentName}</h1>
           </div>
           <p className="text-gray-600">{agentDescription}</p>
@@ -138,8 +173,7 @@ export default function AgentInterface({
               {!result && !loading && (
                 <div className="flex items-center justify-center h-64 text-gray-400">
                   <div className="text-center">
-                    <div className="text-4xl mb-2">🤖</div>
-                    <p>Run the agent to see results</p>
+                    <p className="text-lg font-medium">Run the agent to see results</p>
                   </div>
                 </div>
               )}
@@ -152,21 +186,24 @@ export default function AgentInterface({
 
               {result && (
                 <div className="space-y-4">
-                  {result.demo_mode && (
+                  {(result.demo_mode || result.message) && (
                     <div className="p-3 bg-yellow-50 border border-yellow-300 rounded text-sm text-yellow-900">
-                      ⚠️ <strong>DEMO MODE:</strong> These are simulated results. Install Ollama for real AI processing.
+                      {result.message || 'DEMO MODE: These are simulated results. Install Ollama for real AI processing.'}
                     </div>
                   )}
                   
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <pre className="text-sm whitespace-pre-wrap overflow-auto">
-                      {JSON.stringify(result.output, null, 2)}
-                    </pre>
+                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <div className="prose prose-sm max-w-none">
+                      <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-gray-800">
+                        {result.output?.report || result.output?.data || JSON.stringify(result.output, null, 2)}
+                      </pre>
+                    </div>
                   </div>
 
                   <Button
                     onClick={() => {
-                      navigator.clipboard.writeText(JSON.stringify(result.output, null, 2));
+                      const text = result.output?.report || result.output?.data || JSON.stringify(result.output, null, 2);
+                      navigator.clipboard.writeText(text);
                       alert('Copied to clipboard!');
                     }}
                     variant="outline"
@@ -189,7 +226,7 @@ function generateDemoResult(agentId: string, input: string): any {
     'email-summarizer': {
       demo_mode: true,
       output: {
-        summary: "📧 This email discusses project updates and requires action by end of week. Priority: High. The sender requests review of the attached documents and approval for next phase.",
+        summary: "This email discusses project updates and requires action by end of week. Priority: High. The sender requests review of the attached documents and approval for next phase.",
         extracted_data: {
           sender: "demo@example.com",
           subject: "Project Update - Action Required",

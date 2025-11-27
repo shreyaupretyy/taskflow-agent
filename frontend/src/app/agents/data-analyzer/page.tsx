@@ -7,7 +7,7 @@ export default function DataAnalyzerPage() {
     <AgentInterface
       agentId="data-analyzer"
       agentName="Data Analyzer"
-      agentIcon="📊"
+      agentIcon=""
       agentDescription="Extract insights, identify patterns, and generate actionable reports from your data with confidence scores"
       placeholder="Paste your data for analysis...
 

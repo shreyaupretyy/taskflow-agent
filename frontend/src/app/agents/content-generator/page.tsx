@@ -7,7 +7,7 @@ export default function ContentGeneratorPage() {
     <AgentInterface
       agentId="content-generator"
       agentName="Content Generator"
-      agentIcon="✍️"
+      agentIcon=""
       agentDescription="Research topics and write comprehensive articles, blog posts, and marketing content with proper structure and engaging style"
       placeholder="Enter your content topic or brief...
 

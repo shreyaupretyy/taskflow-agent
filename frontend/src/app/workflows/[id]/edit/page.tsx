@@ -314,7 +314,7 @@ export default function EditWorkflowPage() {
                     onClick={() => addNode('extractor')}
                     className="p-3 border-2 border-blue-300 bg-blue-50 rounded-lg hover:bg-blue-100 text-left"
                   >
-                    <div className="font-medium text-blue-900">📧 Extractor</div>
+                    <div className="font-medium text-blue-900">Extractor</div>
                     <div className="text-xs text-blue-700 mt-1">Extract data from text</div>
                   </button>
                   <button
@@ -322,7 +322,7 @@ export default function EditWorkflowPage() {
                     onClick={() => addNode('analyzer')}
                     className="p-3 border-2 border-purple-300 bg-purple-50 rounded-lg hover:bg-purple-100 text-left"
                   >
-                    <div className="font-medium text-purple-900">🔍 Analyzer</div>
+                    <div className="font-medium text-purple-900">Analyzer</div>
                     <div className="text-xs text-purple-700 mt-1">Analyze and classify</div>
                   </button>
                   <button

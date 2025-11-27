@@ -12,6 +12,8 @@ class BaseAgent:
     def __init__(self, name: str, model: str = None):
         self.name = name
         self.model = model or settings.DEFAULT_MODEL
+        print(f"🔍 Initializing {name} agent with model: {self.model}")
+        print(f"🔍 Ollama base URL: {settings.OLLAMA_BASE_URL}")
         self.llm = Ollama(
             model=self.model,
             base_url=settings.OLLAMA_BASE_URL,
@@ -30,7 +32,10 @@ class BaseAgent:
     def _parse_json_response(self, response: str) -> Dict[str, Any]:
         """Parse JSON from LLM response."""
         try:
-            # Try to find JSON in markdown code blocks
+            # Remove any leading/trailing text before JSON
+            response = response.strip()
+            
+            # Try to find JSON in the response
             if "```json" in response:
                 start = response.find("```json") + 7
                 end = response.find("```", start)
@@ -39,13 +44,26 @@ class BaseAgent:
                 start = response.find("```") + 3
                 end = response.find("```", start)
                 json_str = response[start:end].strip()
+            elif "{" in response and "}" in response:
+                # Find the first { and last }
+                start = response.find("{")
+                end = response.rfind("}") + 1
+                json_str = response[start:end].strip()
             else:
                 json_str = response.strip()
             
             return json.loads(json_str)
-        except json.JSONDecodeError:
-            # If parsing fails, return the raw response
-            return {"result": response, "raw": True}
+        except json.JSONDecodeError as e:
+            # If parsing fails, try to extract JSON from text
+            import re
+            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+            if json_match:
+                try:
+                    return json.loads(json_match.group())
+                except:
+                    pass
+            # Last resort: return structured error
+            return {"error": "Failed to parse response", "raw_response": response}
 
 
 class ResearcherAgent(BaseAgent):
@@ -92,36 +110,45 @@ class ExtractorAgent(BaseAgent):
     
     def __init__(self):
         super().__init__("Extractor")
-        self.system_prompt = """You are a data extraction agent specialized in extracting structured information from text.
-Your task is to identify and extract relevant data points according to the schema provided.
-Be precise and only extract information that is explicitly present in the text.
-Respond in JSON format matching the requested schema."""
+        self.system_prompt = """You are an email analysis agent. Analyze the email and provide a comprehensive, well-formatted summary.
+
+Format your response as follows:
+
+EMAIL ANALYSIS REPORT
+
+SUMMARY
+[Provide 2-3 sentence summary of the email's main points]
+
+SENDER: [sender email or name]
+SUBJECT: [email subject if mentioned]
+PRIORITY: [High/Medium/Low]
+CATEGORY: [Action Required/Information/Request/Update]
+SENTIMENT: [Positive/Neutral/Negative]
+DEADLINE: [any mentioned deadline or Not specified]
+
+ACTION ITEMS
+[List each action item with a bullet point]
+
+KEY POINTS
+[List each key point with a bullet point]
+
+Be clear, concise, and professional."""
     
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Extract structured data from text."""
         text = input_data.get("text", "")
-        schema = input_data.get("schema", {})
-        fields = input_data.get("fields", [])
-        
-        schema_str = json.dumps(schema) if schema else f"Fields to extract: {', '.join(fields)}"
         
         prompt = f"""{self.system_prompt}
 
-Text to extract from:
-{text}
-
-Extraction Schema:
-{schema_str}
-
-Extract the data and return it in JSON format matching the schema."""
+Email text to analyze:
+{text}"""
 
         response = self.llm.invoke(prompt)
-        result = self._parse_json_response(response)
         
         return {
             "agent": self.name,
             "status": "success",
-            "data": result
+            "report": response
         }
 
 
@@ -130,42 +157,44 @@ class WriterAgent(BaseAgent):
     
     def __init__(self):
         super().__init__("Writer")
-        self.system_prompt = """You are a professional writing agent specialized in creating high-quality content.
-Your task is to write clear, engaging, and well-structured content based on the given requirements.
-Adapt your writing style to match the specified tone and format.
-Provide your output in the requested format."""
+        self.system_prompt = """You are a professional content writer. Create engaging, well-structured content based on the given task.
+
+Format your response as follows:
+
+CONTENT GENERATION REPORT
+
+TITLE
+[Create an engaging title]
+
+CONTENT
+[Write the full content with proper paragraphs, structure, and formatting]
+
+METADATA
+Word Count: [approximate word count]
+Tone: Professional
+Format: [article/blog/email/etc]
+
+KEY TAKEAWAYS
+• [Key point 1]
+• [Key point 2]
+• [Key point 3]
+
+Write in a clear, engaging, and professional style."""
     
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Generate written content."""
         task = input_data.get("task", "")
-        content_type = input_data.get("content_type", "article")
-        tone = input_data.get("tone", "professional")
-        length = input_data.get("length", "medium")
-        context = input_data.get("context", "")
         
         prompt = f"""{self.system_prompt}
 
-Writing Task: {task}
-Content Type: {content_type}
-Tone: {tone}
-Length: {length}
-Context: {context}
-
-Write the content and return it in JSON format:
-{{
-    "title": "Content title",
-    "content": "The written content",
-    "word_count": number,
-    "summary": "Brief summary"
-}}"""
+Writing Task: {task}"""
 
         response = self.llm.invoke(prompt)
-        result = self._parse_json_response(response)
         
         return {
             "agent": self.name,
             "status": "success",
-            "data": result
+            "report": response
         }
 
 
@@ -174,43 +203,40 @@ class AnalyzerAgent(BaseAgent):
     
     def __init__(self):
         super().__init__("Analyzer")
-        self.system_prompt = """You are a data analysis agent specialized in analyzing information and providing insights.
-Your task is to examine the provided data, identify patterns, trends, and anomalies.
-Provide actionable insights and recommendations based on your analysis.
-Respond in JSON format with structured analysis results."""
+        self.system_prompt = """You are an expert code reviewer. Review the code and provide the corrected version with a brief summary.
+
+Format your response as follows:
+
+CODE REVIEW
+
+SUMMARY
+[1-2 sentence summary of main issues fixed]
+
+CORRECTED CODE
+[Provide the complete corrected code with all fixes applied]
+
+CHANGES MADE
+• [Brief description of fix 1]
+• [Brief description of fix 2]
+• [Brief description of fix 3]
+
+Be concise and focus on providing working, corrected code."""
     
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze data and return insights."""
         data = input_data.get("data", "")
-        analysis_type = input_data.get("analysis_type", "general")
-        focus_areas = input_data.get("focus_areas", [])
-        
-        focus_str = ", ".join(focus_areas) if focus_areas else "all aspects"
         
         prompt = f"""{self.system_prompt}
 
-Data to analyze:
-{json.dumps(data) if isinstance(data, dict) else str(data)}
-
-Analysis Type: {analysis_type}
-Focus Areas: {focus_str}
-
-Provide your analysis in JSON format:
-{{
-    "summary": "Overall analysis summary",
-    "insights": ["insight 1", "insight 2", ...],
-    "patterns": ["pattern 1", "pattern 2", ...],
-    "recommendations": ["recommendation 1", "recommendation 2", ...],
-    "confidence": 0.0-1.0
-}}"""
+Content to analyze:
+{data}"""
 
         response = self.llm.invoke(prompt)
-        result = self._parse_json_response(response)
         
         return {
             "agent": self.name,
             "status": "success",
-            "data": result
+            "report": response
         }
 
 

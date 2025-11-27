@@ -1,90 +1,88 @@
-# TaskFlow Agent: Multi-Agent Workflow Builder
+# TaskFlow Agent
 
-An advanced AI automation platform that enables users to create, orchestrate, and execute complex multi-agent workflows through an intuitive drag-and-drop interface.
+> AI-Powered Agent Platform for Business Automation
 
-## Overview
+An intelligent AI agent platform that provides pre-built AI agents for common business tasks including email analysis, content generation, data analysis, code review, customer support, and meeting notes.
 
-TaskFlow Agent is a comprehensive workflow automation system designed for businesses, recruiters, lawyers, and founders who need to automate repetitive data workflows without requiring engineering teams. Build sophisticated AI-powered workflows such as website monitoring, data extraction, content summarization, automated emailing, and database updates.
+[![GitHub](https://img.shields.io/badge/GitHub-TaskFlow_Agent-blue?logo=github)](https://github.com/shreyaupretyy/taskflow-agent)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## Key Features
+## 🎯 Overview
 
-- **Visual Workflow Builder**: Drag-and-drop node-based editor for creating complex AI agent workflows
-- **Multi-Agent System**: Specialized agents (Researcher, Extractor, Writer) with persistent memory and state management
-- **Long-Running Orchestration**: Robust task execution with Celery for handling complex, time-intensive workflows
-- **Intelligent Web Scraping**: Advanced scraping capabilities with anti-bot detection strategies
-- **Real-Time Execution Logs**: WebSocket-powered live monitoring of workflow execution
-- **Vector-Powered Search**: ChromaDB integration for semantic search and embeddings
-- **Enterprise Security**: Role-based access control and API key management system
-- **Structured Data Generation**: LLM-generated data automatically stored in PostgreSQL
-- **Containerized Deployment**: Docker support for simplified deployment and scaling
+TaskFlow Agent simplifies business automation by providing ready-to-use AI agents powered by Ollama and LLaMA 3.2. No workflow building required - just select an agent, provide your input, and get instant AI-generated results.
 
-## Technology Stack
+## ✨ Features
 
-### Frontend
-- Next.js 14 (App Router)
-- React Flow - Node-based workflow editor
-- Tailwind CSS - Modern, responsive styling
-- shadcn/ui - Professional UI components
-- WebSocket client - Real-time updates
+### 🤖 Pre-Built AI Agents
+
+- **Email Summarizer** - Analyze emails and extract key information, action items, and priorities
+- **Content Generator** - Create professional content including articles, blogs, and marketing copy
+- **Data Analyzer** - Analyze data and provide insights, patterns, and recommendations
+- **Code Reviewer** - Review code and provide corrected versions with fixes
+- **Customer Support** - Generate professional customer support responses
+- **Meeting Notes** - Convert meeting transcripts into structured notes with action items
+
+### 💡 Key Capabilities
+
+- ✅ Real AI processing with Ollama (LLaMA 3.2)
+- ✅ Clean, professional UI without distractions
+- ✅ Human-readable reports (not JSON)
+- ✅ Fast response times (3-8 seconds after first load)
+- ✅ Secure JWT authentication
+- ✅ Copy results to clipboard
+- ✅ Demo mode fallback when Ollama is unavailable
+
+## 📸 Screenshots
+
+### Dashboard
+![Dashboard](uploads/dashboard.png)
+
+### Email Summarizer
+![Email Summarizer](uploads/email_summarizer.png)
+
+### Content Generator
+![Content Generator](uploads/content_generator.png)
+
+### Data Analyzer
+![Data Analyzer](uploads/data_analyzer.png)
+
+### Code Reviewer
+![Code Reviewer](uploads/code_reviewer.png)
+
+## 🛠️ Technology Stack
 
 ### Backend
+- **FastAPI** - High-performance async API framework
+- **SQLAlchemy** - ORM with SQLite database
+- **Ollama** - Local LLM inference (LLaMA 3.2)
+- **LangChain** - LLM framework for agent orchestration
+- **Argon2** - Password hashing
+- **JWT** - Secure authentication
+
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Modern styling
+- **Zustand** - State management
+- **shadcn/ui** - UI components
+
+## 🚀 Quick Start
+
+### Prerequisites
+
 - Python 3.11+
-- FastAPI - High-performance async API framework
-- LangGraph - Multi-agent orchestration
-- PostgreSQL - Primary data store
-- ChromaDB - Vector database for embeddings
-- Celery + Redis - Task queue and workflow orchestration
-- WebSocket - Real-time communication
+- Node.js 18+
+- Ollama ([Download](https://ollama.ai))
 
-### AI/ML
-- Ollama (Llama 3 / Mixtral) - Local LLM inference
-- Sentence Transformers - Open-source embeddings
-- LangChain - LLM framework
+### Installation
 
-## Architecture
-
-```
-├── frontend/           # Next.js application
-│   ├── src/
-│   │   ├── app/       # App router pages
-│   │   ├── components/# React components
-│   │   └── lib/       # Utilities and helpers
-│   └── package.json
-│
-├── backend/           # FastAPI application
-│   ├── app/
-│   │   ├── agents/    # AI agent implementations
-│   │   ├── api/       # API routes
-│   │   ├── core/      # Core configuration
-│   │   ├── models/    # Database models
-│   │   ├── services/  # Business logic
-│   │   └── tasks/     # Celery tasks
-│   ├── requirements.txt
-│   └── main.py
-│
-└── docker-compose.yml # Container orchestration
-```
-
-## Prerequisites
-
-- Python 3.11 or higher
-- Node.js 18 or higher
-- PostgreSQL 14+
-- Redis 7+
-- Ollama (for local LLM inference)
-- Git
-
-## Installation
-
-### 1. Clone the Repository
-
+1. **Clone the repository**
 ```bash
-git clone https://github.com/shreyaupretyy/ai-automation-platform.git
-cd ai-automation-platform
+git clone https://github.com/shreyaupretyy/taskflow-agent.git
+cd taskflow-agent
 ```
 
-### 2. Backend Setup
-
+2. **Backend Setup**
 ```bash
 cd backend
 
@@ -92,258 +90,260 @@ cd backend
 python -m venv venv
 
 # Activate virtual environment
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Linux/Mac
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Set up environment variables
+# Setup environment
 cp .env.example .env
-# Edit .env with your configuration
+# Edit .env and set DEFAULT_MODEL=llama3.2
 ```
 
-### 3. Frontend Setup
-
+3. **Frontend Setup**
 ```bash
 cd frontend
 
 # Install dependencies
 npm install
 
-# Set up environment variables
+# Setup environment
 cp .env.example .env.local
-# Edit .env.local with your configuration
 ```
 
-### 4. Database Setup
-
+4. **Install Ollama and Model**
 ```bash
-# Start PostgreSQL and Redis
-docker-compose up -d postgres redis
+# Download Ollama from https://ollama.ai
 
-# Run migrations (from backend directory)
-python -m alembic upgrade head
+# Pull LLaMA 3.2 model
+ollama pull llama3.2
+
+# Start Ollama (it usually runs automatically as a service)
+ollama serve
 ```
 
-### 5. Install Ollama and Models
+### Running the Application
 
-```bash
-# Install Ollama from https://ollama.ai
-
-# Pull required models
-ollama pull llama3
-ollama pull mixtral
-```
-
-## Running the Application
-
-### Using Docker (Recommended)
-
-```bash
-docker-compose up
-```
-
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
-
-### Manual Setup
-
-**Terminal 1 - Backend API:**
-```bash
-cd backend
-venv\Scripts\activate  # or source venv/bin/activate
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-**Terminal 2 - Celery Worker:**
+**Terminal 1 - Backend:**
 ```bash
 cd backend
 venv\Scripts\activate
-celery -A app.tasks.celery_app worker --loglevel=info
+uvicorn app.main:app --reload
 ```
 
-**Terminal 3 - Celery Beat (Scheduler):**
-```bash
-cd backend
-venv\Scripts\activate
-celery -A app.tasks.celery_app beat --loglevel=info
-```
-
-**Terminal 4 - Frontend:**
+**Terminal 2 - Frontend:**
 ```bash
 cd frontend
 npm run dev
 ```
 
-## Usage
+**Access the Application:**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
 
-### Creating a Workflow
+### First Time Setup
 
-1. Navigate to the Workflow Builder
-2. Drag nodes from the sidebar onto the canvas
-3. Connect nodes to define the workflow sequence
-4. Configure each node with specific parameters
-5. Save and execute the workflow
+1. Navigate to http://localhost:3000
+2. Click "Register" to create an account
+3. Login with your credentials
+4. Select any agent from the dashboard
+5. Enter your text and click "Run Agent"
+6. Get AI-generated results in seconds!
 
-### Available Node Types
+## 📖 Usage Guide
 
-- **Trigger Nodes**: Schedule, Webhook, Manual
-- **AI Agent Nodes**: Researcher, Extractor, Writer, Analyzer
-- **Action Nodes**: HTTP Request, Database Query, Email Sender
-- **Logic Nodes**: Condition, Loop, Data Transformer
-- **Storage Nodes**: Save to Database, Save to Vector DB
+### Email Summarizer
+Analyzes emails and provides:
+- Concise summary
+- Sender and subject information
+- Priority level and category
+- Action items with deadlines
+- Key points
 
-### Example Workflows
-
-**Content Monitoring Pipeline:**
+**Example Input:**
 ```
-Website Monitor → Content Extractor → Summarizer → Email Notification
-```
+From: john@company.com
+Subject: Q4 Budget Review - Action Required
 
-**Data Research Pipeline:**
-```
-Search Query → Researcher Agent → Data Analyzer → Database Storage
-```
-
-**Report Generation:**
-```
-Database Query → Writer Agent → PDF Generator → Email Sender
+Hi team, we need to finalize our Q4 budget numbers by Wednesday EOD. 
+Please review the attached spreadsheet and provide your department's input.
 ```
 
-## API Documentation
+### Content Generator
+Creates professional content including:
+- Engaging title
+- Well-structured content
+- Word count and metadata
+- Key takeaways
 
-Interactive API documentation is available at `/docs` when running the backend server.
-
-### Key Endpoints
-
-- `POST /api/workflows` - Create new workflow
-- `GET /api/workflows/{id}` - Get workflow details
-- `POST /api/workflows/{id}/execute` - Execute workflow
-- `GET /api/executions/{id}/logs` - Get execution logs
-- `POST /api/auth/login` - User authentication
-- `POST /api/auth/api-keys` - Generate API key
-
-## Configuration
-
-### Environment Variables
-
-**Backend (.env):**
+**Example Input:**
 ```
-DATABASE_URL=postgresql://user:password@localhost:5432/taskflow
-REDIS_URL=redis://localhost:6379/0
+Write a blog post about the benefits of AI automation in business
+```
+
+### Data Analyzer
+Provides comprehensive analysis with:
+- Executive summary
+- Key insights
+- Identified patterns
+- Actionable recommendations
+
+**Example Input:**
+```
+Analyze this sales data: Q1: $50K, Q2: $75K, Q3: $90K, Q4: $120K
+```
+
+### Code Reviewer
+Reviews code and provides:
+- Brief summary of issues
+- Complete corrected code
+- List of changes made
+
+**Example Input:**
+```python
+def calculate(x,y):
+    result = x+y
+    return result
+```
+
+## 🔧 Configuration
+
+### Backend (.env)
+```env
+# Database
+DATABASE_URL=sqlite:///./taskflow.db
+
+# Security
+SECRET_KEY=your-secret-key-here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# Ollama
 OLLAMA_BASE_URL=http://localhost:11434
-CHROMA_PERSIST_DIR=./chroma_data
-SECRET_KEY=your-secret-key
+DEFAULT_MODEL=llama3.2
+TEMPERATURE=0.7
+
+# CORS
+CORS_ORIGINS=["http://localhost:3000", "http://127.0.0.1:3000"]
 ```
 
-**Frontend (.env.local):**
-```
+### Frontend (.env.local)
+```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
 ```
 
-## Development
+## 🏗️ Architecture
 
-### Running Tests
+```
+taskflow-agent/
+├── backend/
+│   ├── app/
+│   │   ├── agents/          # AI agent implementations
+│   │   │   └── base_agent.py
+│   │   ├── api/
+│   │   │   └── routes/      # API endpoints
+│   │   │       ├── auth.py
+│   │   │       └── agents.py
+│   │   ├── core/            # Configuration and security
+│   │   ├── models/          # Database models
+│   │   └── main.py
+│   ├── requirements.txt
+│   └── .env
+│
+├── frontend/
+│   ├── src/
+│   │   ├── app/             # Next.js pages
+│   │   │   ├── auth/        # Login/Register
+│   │   │   ├── dashboard/   # Main dashboard
+│   │   │   └── agents/      # Agent pages
+│   │   ├── components/      # React components
+│   │   │   └── AgentInterface.tsx
+│   │   └── store/           # State management
+│   ├── package.json
+│   └── .env.local
+│
+└── uploads/                 # Screenshots
+```
 
+## 🔐 Security
+
+- **JWT Authentication** - Secure token-based auth
+- **Password Hashing** - Argon2 for secure password storage
+- **CORS Protection** - Configured origins only
+- **SQL Injection Protection** - SQLAlchemy ORM
+- **Rate Limiting Ready** - Backend infrastructure in place
+
+## 🐛 Troubleshooting
+
+### Ollama Not Connected
+**Error:** "Using demo mode - Ollama not connected"
+
+**Solution:**
+1. Install Ollama from https://ollama.ai
+2. Run `ollama pull llama3.2`
+3. Ensure Ollama is running: `ollama serve`
+4. Check `OLLAMA_BASE_URL` in backend `.env`
+
+### Backend Won't Start
+**Error:** Port already in use
+
+**Solution:**
 ```bash
-# Backend tests
-cd backend
-pytest
-
-# Frontend tests
-cd frontend
-npm test
+# Kill existing Python processes
+taskkill /F /IM python.exe  # Windows
+# pkill -9 python  # Linux/Mac
 ```
 
-### Code Quality
+### Authentication Errors
+**Error:** 401 Unauthorized
 
-```bash
-# Backend linting
-cd backend
-black app/
-flake8 app/
+**Solution:**
+1. Logout and login again to refresh token
+2. Clear browser localStorage
+3. Check backend logs for JWT errors
 
-# Frontend linting
-cd frontend
-npm run lint
-```
+## 📊 Performance
 
-## Deployment
+- **First Request:** 15-30 seconds (model loads into RAM)
+- **Subsequent Requests:** 3-8 seconds
+- **Model Size:** ~2GB (LLaMA 3.2)
+- **Memory Usage:** 4-8GB RAM recommended
 
-### Docker Deployment
+## 🤝 Contributing
 
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
+Contributions are welcome! Please:
 
-### Environment-Specific Configurations
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- Development: Hot-reload enabled, verbose logging
-- Production: Optimized builds, error tracking, rate limiting
+## 📝 License
 
-## Security Considerations
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- API keys are hashed before storage
-- Rate limiting on all public endpoints
-- CORS properly configured for production
-- SQL injection protection via ORM
-- Input validation on all user data
-- WebSocket authentication required
+## 🔗 Links
 
-## Performance Optimization
+- **GitHub Repository:** https://github.com/shreyaupretyy/taskflow-agent
+- **Ollama:** https://ollama.ai
+- **LLaMA Models:** https://ai.meta.com/llama/
 
-- Connection pooling for database
-- Redis caching for frequent queries
-- Lazy loading of workflow nodes
-- Batch processing for large datasets
-- Worker auto-scaling based on queue length
+## 🙏 Acknowledgments
 
-## Troubleshooting
+- Ollama team for local LLM infrastructure
+- Meta for LLaMA models
+- LangChain for agent framework
+- FastAPI and Next.js communities
 
-### Common Issues
+## 📧 Support
 
-**Ollama connection errors:**
-- Ensure Ollama is running: `ollama serve`
-- Check OLLAMA_BASE_URL in environment variables
-
-**Database connection failures:**
-- Verify PostgreSQL is running
-- Check DATABASE_URL credentials
-
-**Celery tasks not executing:**
-- Ensure Redis is running
-- Check Celery worker logs
-- Verify REDIS_URL configuration
-
-## Contributing
-
-Contributions are welcome. Please follow the existing code style and include tests for new features.
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Support
-
-For issues and questions, please open an issue on GitHub.
-
-## Roadmap
-
-- Multi-tenant support
-- Workflow templates marketplace
-- Advanced scheduling options
-- Cloud provider integrations (AWS, GCP, Azure)
-- Mobile application
-- Workflow versioning and rollback
-- Advanced analytics dashboard
-- Custom agent development SDK
+For issues and questions:
+- Open an issue on [GitHub](https://github.com/shreyaupretyy/taskflow-agent/issues)
+- Check existing issues for solutions
 
 ---
 
-Built with modern technologies for scalable AI automation.
+**Built with ❤️ for business automation**

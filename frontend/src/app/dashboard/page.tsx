@@ -44,42 +44,18 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">Dashboard</h2>
-          <p className="mt-2 text-gray-600">Welcome to your workflow automation platform</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-2">Workflows</h3>
-            <p className="text-3xl font-bold text-blue-600">0</p>
-            <p className="text-sm text-gray-600 mt-2">Total workflows created</p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-2">Executions</h3>
-            <p className="text-3xl font-bold text-green-600">0</p>
-            <p className="text-sm text-gray-600 mt-2">Total executions</p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-2">Active Workflows</h3>
-            <p className="text-3xl font-bold text-purple-600">0</p>
-            <p className="text-sm text-gray-600 mt-2">Currently active</p>
-          </div>
+          <h2 className="text-3xl font-bold text-gray-900">AI Agents</h2>
+          <p className="mt-2 text-gray-600">Select a pre-built AI agent to start automating your tasks</p>
         </div>
 
         <div className="bg-white rounded-lg shadow">
           <div className="p-6">
-            <h3 className="text-2xl font-bold mb-2">Choose Your AI Agent</h3>
-            <p className="text-gray-600 mb-6">Select a pre-built AI agent to start automating your tasks</p>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Email Summarizer Agent */}
               <button
                 onClick={() => router.push('/agents/email-summarizer')}
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-4xl mb-3">📧</div>
                 <h4 className="text-lg font-bold text-gray-900 group-hover:text-blue-600">Email Summarizer</h4>
                 <p className="text-sm text-gray-600 mt-2">Automatically analyze and summarize emails with priority detection</p>
                 <div className="mt-4 flex items-center text-xs text-blue-600 font-medium">
@@ -95,7 +71,6 @@ export default function DashboardPage() {
                 onClick={() => router.push('/agents/content-generator')}
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-purple-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-4xl mb-3">✍️</div>
                 <h4 className="text-lg font-bold text-gray-900 group-hover:text-purple-600">Content Generator</h4>
                 <p className="text-sm text-gray-600 mt-2">Research topics and write comprehensive articles and blog posts</p>
                 <div className="mt-4 flex items-center text-xs text-purple-600 font-medium">
@@ -111,7 +86,6 @@ export default function DashboardPage() {
                 onClick={() => router.push('/agents/data-analyzer')}
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-4xl mb-3">📊</div>
                 <h4 className="text-lg font-bold text-gray-900 group-hover:text-green-600">Data Analyzer</h4>
                 <p className="text-sm text-gray-600 mt-2">Extract insights, identify patterns, and generate reports from data</p>
                 <div className="mt-4 flex items-center text-xs text-green-600 font-medium">
@@ -125,10 +99,9 @@ export default function DashboardPage() {
               {/* Customer Support Agent */}
               <button
                 onClick={() => router.push('/agents/customer-support')}
-                className="p-6 border-2 border-gray-200 rounded-xl hover:border-orange-500 hover:shadow-lg transition-all text-left group"
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-yellow-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-4xl mb-3">💬</div>
-                <h4 className="text-lg font-bold text-gray-900 group-hover:text-orange-600">Customer Support</h4>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-yellow-600">Customer Support</h4>
                 <p className="text-sm text-gray-600 mt-2">Analyze inquiries and generate professional support responses</p>
                 <div className="mt-4 flex items-center text-xs text-orange-600 font-medium">
                   <span>Use Agent</span>
@@ -141,10 +114,9 @@ export default function DashboardPage() {
               {/* Code Reviewer Agent */}
               <button
                 onClick={() => router.push('/agents/code-reviewer')}
-                className="p-6 border-2 border-gray-200 rounded-xl hover:border-red-500 hover:shadow-lg transition-all text-left group"
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-4xl mb-3">👨‍💻</div>
-                <h4 className="text-lg font-bold text-gray-900 group-hover:text-red-600">Code Reviewer</h4>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-indigo-600">Code Reviewer</h4>
                 <p className="text-sm text-gray-600 mt-2">Analyze code for bugs, security issues, and improvements</p>
                 <div className="mt-4 flex items-center text-xs text-red-600 font-medium">
                   <span>Use Agent</span>
@@ -157,10 +129,9 @@ export default function DashboardPage() {
               {/* Meeting Notes Agent */}
               <button
                 onClick={() => router.push('/agents/meeting-notes')}
-                className="p-6 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:shadow-lg transition-all text-left group"
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-pink-500 hover:shadow-lg transition-all text-left group"
               >
-                <div className="text-4xl mb-3">📝</div>
-                <h4 className="text-lg font-bold text-gray-900 group-hover:text-indigo-600">Meeting Notes</h4>
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-pink-600">Meeting Notes</h4>
                 <p className="text-sm text-gray-600 mt-2">Convert meeting transcripts into structured notes with action items</p>
                 <div className="mt-4 flex items-center text-xs text-indigo-600 font-medium">
                   <span>Use Agent</span>

@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     
     # LLM
     OLLAMA_BASE_URL: str = "http://localhost:11434"
-    DEFAULT_MODEL: str = "llama3"
+    DEFAULT_MODEL: str = "llama3.2"
     TEMPERATURE: float = 0.7
     MAX_TOKENS: int = 2000
     
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
     
     # Demo mode (when Ollama/Redis not available)
-    DEMO_MODE: bool = True  # Set to False when Ollama is running
+    DEMO_MODE: bool = False  # Using real AI with Ollama
     
     # Email
     SMTP_HOST: str = "smtp.gmail.com"

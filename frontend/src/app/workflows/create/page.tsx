@@ -258,11 +258,11 @@ export default function CreateWorkflowPage() {
                 disabled={loading}
               >
                 <option value="">Blank Workflow</option>
-                <option value="email_summarizer">📧 Email Summarizer</option>
+                <option value="email_summarizer">Email Summarizer</option>
                 <option value="content_generator">✍️ Content Generator</option>
-                <option value="data_analyzer">📊 Data Analyzer</option>
-                <option value="customer_support">💬 Customer Support Assistant</option>
-                <option value="meeting_notes">📝 Meeting Notes Generator</option>
+                <option value="data_analyzer">Data Analyzer</option>
+                <option value="customer_support">Customer Support Assistant</option>
+                <option value="meeting_notes">Meeting Notes Generator</option>
                 <option value="code_reviewer">👨‍💻 Code Reviewer</option>
               </select>
               <p className="text-xs text-gray-500">

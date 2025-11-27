@@ -7,7 +7,7 @@ export default function CustomerSupportPage() {
     <AgentInterface
       agentId="customer-support"
       agentName="Customer Support Assistant"
-      agentIcon="💬"
+      agentIcon=""
       agentDescription="Analyze customer inquiries and generate professional, empathetic support responses with clear solutions"
       placeholder="Paste customer inquiry here...
 

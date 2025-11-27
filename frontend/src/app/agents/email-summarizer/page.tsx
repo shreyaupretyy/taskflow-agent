@@ -7,7 +7,7 @@ export default function EmailSummarizerPage() {
     <AgentInterface
       agentId="email-summarizer"
       agentName="Email Summarizer"
-      agentIcon="📧"
+      agentIcon=""
       agentDescription="Automatically analyze and summarize emails with priority detection, sentiment analysis, and action item extraction"
       placeholder="Paste your email content here...
 

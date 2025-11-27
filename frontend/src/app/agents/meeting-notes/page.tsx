@@ -7,7 +7,7 @@ export default function MeetingNotesPage() {
     <AgentInterface
       agentId="meeting-notes"
       agentName="Meeting Notes Generator"
-      agentIcon="📝"
+      agentIcon=""
       agentDescription="Convert meeting transcripts into structured notes with attendees, decisions, action items, and next steps"
       placeholder="Paste meeting transcript or notes here...
 

@@ -7,7 +7,7 @@ export default function CodeReviewerPage() {
     <AgentInterface
       agentId="code-reviewer"
       agentName="Code Reviewer"
-      agentIcon="👨‍💻"
+      agentIcon=""
       agentDescription="Analyze code for bugs, security vulnerabilities, performance issues, and suggest improvements with best practices"
       placeholder="Paste your code here for review...
 

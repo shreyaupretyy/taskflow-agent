@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.core.config import settings
 from app.core.database import engine, Base
-from app.api.routes import auth, workflows, executions, api_keys
+from app.api.routes import auth, workflows, executions, api_keys, agents
 import time
 
 # Create database tables
@@ -54,6 +54,7 @@ app.include_router(auth.router, prefix=settings.API_V1_STR)
 app.include_router(workflows.router, prefix=settings.API_V1_STR)
 app.include_router(executions.router, prefix=settings.API_V1_STR)
 app.include_router(api_keys.router, prefix=settings.API_V1_STR)
+app.include_router(agents.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
