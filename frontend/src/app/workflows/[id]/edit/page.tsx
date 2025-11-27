@@ -180,7 +180,6 @@ export default function EditWorkflowPage() {
 
       // Execute workflow
       const result = await workflowApi.execute(workflowId, {
-        trigger_type: 'manual',
         input_data: { text: testInput }
       });
 

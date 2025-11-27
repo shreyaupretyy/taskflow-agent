@@ -16,7 +16,178 @@ export default function CreateWorkflowPage() {
     name: '',
     description: '',
     trigger_type: 'manual',
+    template: '',
   });
+
+  const getTemplateNodes = (template: string) => {
+    const templates: Record<string, any> = {
+      email_summarizer: [
+        {
+          id: 'node_1',
+          type: 'extractor',
+          data: {
+            config: {
+              prompt: 'Extract the following from the email: sender, subject, date, main topic, key points, and any action items or requests.',
+              input: ''
+            }
+          }
+        },
+        {
+          id: 'node_2',
+          type: 'analyzer',
+          data: {
+            config: {
+              prompt: 'Analyze the extracted email information and determine: 1) Priority level (High/Medium/Low), 2) Category (Question, Request, Information, Complaint, etc.), 3) Sentiment (Positive/Neutral/Negative)',
+              input: '{{node_1.output}}'
+            }
+          }
+        },
+        {
+          id: 'node_3',
+          type: 'writer',
+          data: {
+            config: {
+              prompt: 'Generate a professional 2-3 sentence summary of the email that includes the main point, any action required, and the priority level.',
+              input: '{{node_2.output}}'
+            }
+          }
+        }
+      ],
+      content_generator: [
+        {
+          id: 'node_1',
+          type: 'researcher',
+          data: {
+            config: {
+              prompt: 'Research the given topic and gather key information, facts, and relevant details.',
+              input: ''
+            }
+          }
+        },
+        {
+          id: 'node_2',
+          type: 'writer',
+          data: {
+            config: {
+              prompt: 'Write a comprehensive, engaging article or blog post based on the research. Include an introduction, main points, and conclusion.',
+              input: '{{node_1.output}}'
+            }
+          }
+        }
+      ],
+      data_analyzer: [
+        {
+          id: 'node_1',
+          type: 'extractor',
+          data: {
+            config: {
+              prompt: 'Extract and structure the data from the provided text or document.',
+              input: ''
+            }
+          }
+        },
+        {
+          id: 'node_2',
+          type: 'analyzer',
+          data: {
+            config: {
+              prompt: 'Analyze the extracted data to identify patterns, trends, anomalies, and key insights.',
+              input: '{{node_1.output}}'
+            }
+          }
+        },
+        {
+          id: 'node_3',
+          type: 'writer',
+          data: {
+            config: {
+              prompt: 'Create a clear, actionable report summarizing the analysis findings with recommendations.',
+              input: '{{node_2.output}}'
+            }
+          }
+        }
+      ],
+      customer_support: [
+        {
+          id: 'node_1',
+          type: 'analyzer',
+          data: {
+            config: {
+              prompt: 'Analyze the customer inquiry to understand: 1) Issue type, 2) Urgency level, 3) Customer sentiment, 4) Required department/expertise.',
+              input: ''
+            }
+          }
+        },
+        {
+          id: 'node_2',
+          type: 'writer',
+          data: {
+            config: {
+              prompt: 'Generate a professional, empathetic response addressing the customer\'s concern with clear next steps or solutions.',
+              input: '{{node_1.output}}'
+            }
+          }
+        }
+      ],
+      meeting_notes: [
+        {
+          id: 'node_1',
+          type: 'extractor',
+          data: {
+            config: {
+              prompt: 'Extract from meeting transcript: attendees, main topics discussed, decisions made, action items with owners, and deadlines.',
+              input: ''
+            }
+          }
+        },
+        {
+          id: 'node_2',
+          type: 'writer',
+          data: {
+            config: {
+              prompt: 'Create structured meeting notes with: summary, key decisions, action items table (task, owner, deadline), and next steps.',
+              input: '{{node_1.output}}'
+            }
+          }
+        }
+      ],
+      code_reviewer: [
+        {
+          id: 'node_1',
+          type: 'analyzer',
+          data: {
+            config: {
+              prompt: 'Analyze the code for: 1) Potential bugs, 2) Security issues, 3) Performance problems, 4) Code quality and best practices violations.',
+              input: ''
+            }
+          }
+        },
+        {
+          id: 'node_2',
+          type: 'writer',
+          data: {
+            config: {
+              prompt: 'Generate a detailed code review with specific suggestions, improvement recommendations, and code examples where applicable.',
+              input: '{{node_1.output}}'
+            }
+          }
+        }
+      ]
+    };
+    return templates[template] || [];
+  };
+
+  const getTemplateName = (template: string) => {
+    const names: Record<string, string> = {
+      email_summarizer: 'Email Summarizer - Extracts, analyzes, and summarizes emails',
+      content_generator: 'Content Generator - Researches and writes articles',
+      data_analyzer: 'Data Analyzer - Extracts data, analyzes patterns, creates reports',
+      customer_support: 'Customer Support - Analyzes inquiries and generates responses',
+      meeting_notes: 'Meeting Notes - Extracts action items and creates structured notes',
+      code_reviewer: 'Code Reviewer - Analyzes code and provides improvement suggestions'
+    };
+    return names[template] || template;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,13 +195,20 @@ export default function CreateWorkflowPage() {
     setLoading(true);
 
     try {
+      const nodes = formData.template ? getTemplateNodes(formData.template) : [];
+      const edges = nodes.slice(0, -1).map((node: any, index: number) => ({
+        id: `edge_${index + 1}`,
+        source: node.id,
+        target: nodes[index + 1].id
+      }));
+
       const response = await workflowApi.create({
         name: formData.name,
         description: formData.description,
         trigger_type: formData.trigger_type,
         workflow_data: {
-          nodes: [],
-          edges: [],
+          nodes: nodes,
+          edges: edges,
         },
       });
       
@@ -67,6 +245,35 @@ export default function CreateWorkflowPage() {
                 {error}
               </div>
             )}
+
+            <div className="space-y-2">
+              <label htmlFor="template" className="text-sm font-medium">
+                Workflow Template
+              </label>
+              <select
+                id="template"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                value={formData.template}
+                onChange={(e) => setFormData({ ...formData, template: e.target.value })}
+                disabled={loading}
+              >
+                <option value="">Blank Workflow</option>
+                <option value="email_summarizer">📧 Email Summarizer</option>
+                <option value="content_generator">✍️ Content Generator</option>
+                <option value="data_analyzer">📊 Data Analyzer</option>
+                <option value="customer_support">💬 Customer Support Assistant</option>
+                <option value="meeting_notes">📝 Meeting Notes Generator</option>
+                <option value="code_reviewer">👨‍💻 Code Reviewer</option>
+              </select>
+              <p className="text-xs text-gray-500">
+                Choose a template to start with pre-configured AI nodes, or select blank to build from scratch
+              </p>
+              {formData.template && (
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-900">
+                  ✓ Template selected: {getTemplateName(formData.template)}
+                </div>
+              )}
+            </div>
 
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">

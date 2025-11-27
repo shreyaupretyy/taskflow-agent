@@ -36,7 +36,6 @@ class WorkflowResponse(WorkflowBase):
 
 
 class WorkflowExecutionBase(BaseModel):
-    workflow_id: int
     trigger_type: Optional[str] = "manual"
     input_data: Optional[Dict[str, Any]] = None
 
@@ -45,10 +44,13 @@ class WorkflowExecutionCreate(WorkflowExecutionBase):
     pass
 
 
-class WorkflowExecutionResponse(WorkflowExecutionBase):
+class WorkflowExecutionResponse(BaseModel):
     id: int
+    workflow_id: int
     user_id: int
     status: str
+    trigger_type: Optional[str]
+    input_data: Optional[Dict[str, Any]]
     output_data: Optional[Dict[str, Any]]
     error_message: Optional[str]
     started_at: Optional[datetime]
