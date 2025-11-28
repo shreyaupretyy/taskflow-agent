@@ -1,7 +1,8 @@
 """Dependency injection for services."""
-from app.services.vector_db import vector_db, VectorDBService
-from app.services.email import email_service, EmailService
+
+from app.services.email import EmailService, email_service
 from app.services.scraper import WebScraper
+from app.services.vector_db import VectorDBService, vector_db
 
 
 def get_vector_db_service() -> VectorDBService:

@@ -1,14 +1,16 @@
-from typing import Dict, Any, List, Optional
+import json
+from typing import Any, Dict, List, Optional
+
+from langchain.memory import ConversationBufferMemory
 from langchain.schema import HumanMessage, SystemMessage
 from langchain_community.llms import Ollama
-from langchain.memory import ConversationBufferMemory
+
 from app.core.config import settings
-import json
 
 
 class BaseAgent:
     """Base class for all AI agents."""
-    
+
     def __init__(self, name: str, model: str = None):
         self.name = name
         self.model = model or settings.DEFAULT_MODEL
@@ -20,21 +22,21 @@ class BaseAgent:
             temperature=settings.TEMPERATURE,
         )
         self.memory = ConversationBufferMemory()
-        
+
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute the agent with given input."""
         raise NotImplementedError("Subclasses must implement execute method")
-    
+
     def _format_prompt(self, template: str, **kwargs) -> str:
         """Format a prompt template with variables."""
         return template.format(**kwargs)
-    
+
     def _parse_json_response(self, response: str) -> Dict[str, Any]:
         """Parse JSON from LLM response."""
         try:
             # Remove any leading/trailing text before JSON
             response = response.strip()
-            
+
             # Try to find JSON in the response
             if "```json" in response:
                 start = response.find("```json") + 7
@@ -51,12 +53,13 @@ class BaseAgent:
                 json_str = response[start:end].strip()
             else:
                 json_str = response.strip()
-            
+
             return json.loads(json_str)
         except json.JSONDecodeError as e:
             # If parsing fails, try to extract JSON from text
             import re
-            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+
+            json_match = re.search(r"\{.*\}", response, re.DOTALL)
             if json_match:
                 try:
                     return json.loads(json_match.group())
@@ -68,7 +71,7 @@ class BaseAgent:
 
 class ResearcherAgent(BaseAgent):
     """Agent that researches and gathers information."""
-    
+
     def __init__(self):
         super().__init__("Researcher")
         self.system_prompt = """You are a research agent specialized in gathering and analyzing information.
@@ -82,12 +85,12 @@ Respond in JSON format with the following structure:
     "sources": ["source 1", "source 2", ...],
     "confidence": 0.0-1.0
 }"""
-    
+
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Research a topic and return findings."""
         query = input_data.get("query", "")
         context = input_data.get("context", "")
-        
+
         prompt = f"""{self.system_prompt}
 
 Research Query: {query}
@@ -97,17 +100,13 @@ Provide your research findings in the JSON format specified above."""
 
         response = self.llm.invoke(prompt)
         result = self._parse_json_response(response)
-        
-        return {
-            "agent": self.name,
-            "status": "success",
-            "data": result
-        }
+
+        return {"agent": self.name, "status": "success", "data": result}
 
 
 class ExtractorAgent(BaseAgent):
     """Agent that extracts structured data from unstructured text."""
-    
+
     def __init__(self):
         super().__init__("Extractor")
         self.system_prompt = """You are an email analysis agent. Analyze the email and provide a comprehensive, well-formatted summary.
@@ -133,28 +132,24 @@ KEY POINTS
 [List each key point with a bullet point]
 
 Be clear, concise, and professional."""
-    
+
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Extract structured data from text."""
         text = input_data.get("text", "")
-        
+
         prompt = f"""{self.system_prompt}
 
 Email text to analyze:
 {text}"""
 
         response = self.llm.invoke(prompt)
-        
-        return {
-            "agent": self.name,
-            "status": "success",
-            "report": response
-        }
+
+        return {"agent": self.name, "status": "success", "report": response}
 
 
 class WriterAgent(BaseAgent):
     """Agent that writes and generates content."""
-    
+
     def __init__(self):
         super().__init__("Writer")
         self.system_prompt = """You are a professional content writer. Create engaging, well-structured content based on the given task.
@@ -180,27 +175,23 @@ KEY TAKEAWAYS
 • [Key point 3]
 
 Write in a clear, engaging, and professional style."""
-    
+
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Generate written content."""
         task = input_data.get("task", "")
-        
+
         prompt = f"""{self.system_prompt}
 
 Writing Task: {task}"""
 
         response = self.llm.invoke(prompt)
-        
-        return {
-            "agent": self.name,
-            "status": "success",
-            "report": response
-        }
+
+        return {"agent": self.name, "status": "success", "report": response}
 
 
 class AnalyzerAgent(BaseAgent):
     """Agent that analyzes data and provides insights."""
-    
+
     def __init__(self):
         super().__init__("Analyzer")
         self.system_prompt = """You are an expert code reviewer. Review the code and provide the corrected version with a brief summary.
@@ -221,23 +212,19 @@ CHANGES MADE
 • [Brief description of fix 3]
 
 Be concise and focus on providing working, corrected code."""
-    
+
     async def execute(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze data and return insights."""
         data = input_data.get("data", "")
-        
+
         prompt = f"""{self.system_prompt}
 
 Content to analyze:
 {data}"""
 
         response = self.llm.invoke(prompt)
-        
-        return {
-            "agent": self.name,
-            "status": "success",
-            "report": response
-        }
+
+        return {"agent": self.name, "status": "success", "report": response}
 
 
 # Agent factory
@@ -249,9 +236,9 @@ def create_agent(agent_type: str) -> BaseAgent:
         "writer": WriterAgent,
         "analyzer": AnalyzerAgent,
     }
-    
+
     agent_class = agents.get(agent_type.lower())
     if not agent_class:
         raise ValueError(f"Unknown agent type: {agent_type}")
-    
+
     return agent_class()

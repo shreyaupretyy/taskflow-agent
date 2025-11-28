@@ -1,10 +1,12 @@
+import time
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+from app.api.routes import agents, api_keys, auth, documents, executions, models, workflows
 from app.core.config import settings
-from app.core.database import engine, Base
-from app.api.routes import auth, workflows, executions, api_keys, agents, documents, models
-import time
+from app.core.database import Base, engine
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -14,7 +16,7 @@ app = FastAPI(
     version=settings.VERSION,
     description="Multi-Agent Workflow Builder for AI Automation",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 # CORS middleware
@@ -41,11 +43,7 @@ async def add_process_time_header(request: Request, call_next):
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     return JSONResponse(
-        status_code=500,
-        content={
-            "detail": "Internal server error",
-            "message": str(exc)
-        }
+        status_code=500, content={"detail": "Internal server error", "message": str(exc)}
     )
 
 
@@ -66,17 +64,14 @@ async def root():
         "name": settings.PROJECT_NAME,
         "version": settings.VERSION,
         "status": "operational",
-        "docs": "/docs"
+        "docs": "/docs",
     }
 
 
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
-    return {
-        "status": "healthy",
-        "timestamp": time.time()
-    }
+    return {"status": "healthy", "timestamp": time.time()}
 
 
 @app.on_event("startup")
@@ -94,9 +89,5 @@ async def shutdown_event():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(
-        "app.main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    )
+
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

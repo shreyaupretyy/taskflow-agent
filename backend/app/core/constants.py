@@ -66,7 +66,7 @@ CACHE_TTL_LONG = 3600  # 1 hour
 
 # File upload limits
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
-ALLOWED_FILE_EXTENSIONS = ['.json', '.csv', '.txt', '.pdf']
+ALLOWED_FILE_EXTENSIONS = [".json", ".csv", ".txt", ".pdf"]
 
 # API versioning
 API_VERSION = "v1"

@@ -1,9 +1,10 @@
 """Helper functions for data transformation."""
-from typing import Any, Dict, List
+
 import json
+from typing import Any, Dict, List
 
 
-def dict_to_flat(d: Dict[str, Any], parent_key: str = '', sep: str = '.') -> Dict[str, Any]:
+def dict_to_flat(d: Dict[str, Any], parent_key: str = "", sep: str = ".") -> Dict[str, Any]:
     """Flatten a nested dictionary."""
     items = []
     for k, v in d.items():
@@ -15,7 +16,7 @@ def dict_to_flat(d: Dict[str, Any], parent_key: str = '', sep: str = '.') -> Dic
     return dict(items)
 
 
-def flat_to_dict(d: Dict[str, Any], sep: str = '.') -> Dict[str, Any]:
+def flat_to_dict(d: Dict[str, Any], sep: str = ".") -> Dict[str, Any]:
     """Convert a flat dictionary to nested."""
     result = {}
     for key, value in d.items():
@@ -55,7 +56,7 @@ def safe_json_loads(s: str, default: Any = None) -> Any:
         return default
 
 
-def safe_json_dumps(obj: Any, default: str = '{}') -> str:
+def safe_json_dumps(obj: Any, default: str = "{}") -> str:
     """Safely dump JSON with default value."""
     try:
         return json.dumps(obj)

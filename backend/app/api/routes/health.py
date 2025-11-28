@@ -1,6 +1,9 @@
 """Health check endpoint."""
-from fastapi import APIRouter
+
 from datetime import datetime
+
+from fastapi import APIRouter
+
 from app.core.config import settings
 
 router = APIRouter()
@@ -13,7 +16,7 @@ async def health_check():
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
         "version": settings.VERSION,
-        "service": settings.PROJECT_NAME
+        "service": settings.PROJECT_NAME,
     }
 
 
@@ -21,7 +24,4 @@ async def health_check():
 async def readiness_check():
     """Readiness check endpoint."""
     # Check if all services are ready
-    return {
-        "status": "ready",
-        "timestamp": datetime.utcnow().isoformat()
-    }
+    return {"status": "ready", "timestamp": datetime.utcnow().isoformat()}

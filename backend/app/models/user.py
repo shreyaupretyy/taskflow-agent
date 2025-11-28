@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text
-from sqlalchemy.sql import func
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
 from app.core.database import Base
 
 
@@ -21,6 +22,10 @@ class User(Base):
     # Relationships
     workflows = relationship("Workflow", back_populates="owner", cascade="all, delete-orphan")
     api_keys = relationship("APIKey", back_populates="user", cascade="all, delete-orphan")
-    executions = relationship("WorkflowExecution", back_populates="user", cascade="all, delete-orphan")
-    agent_executions = relationship("AgentExecution", back_populates="user", cascade="all, delete-orphan")
+    executions = relationship(
+        "WorkflowExecution", back_populates="user", cascade="all, delete-orphan"
+    )
+    agent_executions = relationship(
+        "AgentExecution", back_populates="user", cascade="all, delete-orphan"
+    )
     documents = relationship("DocumentStore", back_populates="user", cascade="all, delete-orphan")

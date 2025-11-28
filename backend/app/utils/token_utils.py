@@ -10,7 +10,7 @@ def estimate_tokens(text: str) -> int:
     """
     if not text:
         return 0
-    
+
     # Simple estimation: words * 1.3 (accounts for punctuation and special tokens)
     words = len(text.split())
     return int(words * 1.3)
@@ -35,10 +35,10 @@ def truncate_text(text: str, max_length: int = 1000) -> str:
     """
     if len(text) <= max_length:
         return text
-    
+
     truncated = text[:max_length]
-    last_space = truncated.rfind(' ')
-    
+    last_space = truncated.rfind(" ")
+
     if last_space > 0:
         return truncated[:last_space] + "..."
     return truncated + "..."
