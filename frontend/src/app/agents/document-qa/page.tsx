@@ -130,7 +130,7 @@ export default function DocumentQAPage() {
             <CardHeader>
               <CardTitle>Upload Documents</CardTitle>
               <CardDescription>
-                Upload text files (.txt) to create your knowledge base
+                Upload PDF, text, or markdown files to create your knowledge base
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -139,7 +139,7 @@ export default function DocumentQAPage() {
                   id="file-upload"
                   type="file"
                   multiple
-                  accept=".txt,.md"
+                  accept=".txt,.md,.markdown,.pdf"
                   onChange={(e) => setFiles(e.target.files)}
                   className="block w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
