@@ -3,7 +3,6 @@
 import os
 
 
-
 class ConfigValidator:
     """Validate environment configuration."""
 
