@@ -22,3 +22,5 @@ class User(Base):
     workflows = relationship("Workflow", back_populates="owner", cascade="all, delete-orphan")
     api_keys = relationship("APIKey", back_populates="user", cascade="all, delete-orphan")
     executions = relationship("WorkflowExecution", back_populates="user", cascade="all, delete-orphan")
+    agent_executions = relationship("AgentExecution", back_populates="user", cascade="all, delete-orphan")
+    documents = relationship("DocumentStore", back_populates="user", cascade="all, delete-orphan")
