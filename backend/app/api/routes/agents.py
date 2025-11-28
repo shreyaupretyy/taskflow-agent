@@ -8,6 +8,7 @@ from app.models.user import User
 from app.agents.base_agent import create_agent
 from app.services.metrics_service import MetricsService
 from app.core.config import settings
+from app.utils.token_utils import estimate_tokens
 import time
 
 router = APIRouter(prefix="/agents", tags=["agents"])
@@ -71,6 +72,10 @@ async def execute_agent(
         
         # Calculate metrics
         response_time_ms = (time.time() - start_time) * 1000
+        output_text = str(result.get("report", ""))
+        
+        # Estimate tokens used
+        tokens_used = estimate_tokens(request.input_text) + estimate_tokens(output_text)
         
         # Record execution in database
         execution = MetricsService.record_execution(
@@ -79,9 +84,9 @@ async def execute_agent(
             agent_type=agent_type,
             model_name=request.model or settings.DEFAULT_MODEL,
             input_text=request.input_text[:1000],  # Truncate for storage
-            output_text=str(result).get("report", "")[:2000],
+            output_text=output_text[:2000],
             response_time_ms=response_time_ms,
-            tokens_used=None,  # Can be calculated if needed
+            tokens_used=tokens_used,
             success=True
         )
         
@@ -92,6 +97,7 @@ async def execute_agent(
             "demo_mode": False,
             "execution_id": execution.id,
             "response_time_ms": round(response_time_ms, 2),
+            "tokens_used": tokens_used,
             "model_used": request.model or settings.DEFAULT_MODEL
         }
     except Exception as e:

@@ -27,6 +27,12 @@ export default function DashboardPage() {
               <h1 className="text-xl font-bold">TaskFlow Agent</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <button
+                onClick={() => router.push('/metrics')}
+                className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+              >
+                Metrics
+              </button>
               <span className="text-sm text-gray-700">{user.username}</span>
               <button
                 onClick={() => {
@@ -134,6 +140,21 @@ export default function DashboardPage() {
                 <h4 className="text-lg font-bold text-gray-900 group-hover:text-pink-600">Meeting Notes</h4>
                 <p className="text-sm text-gray-600 mt-2">Convert meeting transcripts into structured notes with action items</p>
                 <div className="mt-4 flex items-center text-xs text-indigo-600 font-medium">
+                  <span>Use Agent</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Document Q&A (RAG) Agent */}
+              <button
+                onClick={() => router.push('/agents/document-qa')}
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-teal-500 hover:shadow-lg transition-all text-left group"
+              >
+                <h4 className="text-lg font-bold text-gray-900 group-hover:text-teal-600">Document Q&A (RAG)</h4>
+                <p className="text-sm text-gray-600 mt-2">Upload documents and ask questions using semantic search</p>
+                <div className="mt-4 flex items-center text-xs text-teal-600 font-medium">
                   <span>Use Agent</span>
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
