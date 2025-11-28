@@ -105,7 +105,10 @@ async def compare_models(
                 best_score = score
                 best_model = model
 
-        winner_reason = f"Best balance of reliability ({best_model.success_rate:.1f}% success) and speed ({best_model.avg_response_time_ms:.0f}ms avg)"
+        winner_reason = (
+            f"Best balance of reliability ({best_model.success_rate:.1f}% success) "
+            f"and speed ({best_model.avg_response_time_ms:.0f}ms avg)"
+        )
 
         return ModelComparisonResponse(
             models=sorted(models, key=lambda x: x.success_rate, reverse=True),

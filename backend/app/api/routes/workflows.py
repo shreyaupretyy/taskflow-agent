@@ -66,11 +66,21 @@ def generate_demo_workflow_results(
                 for n in nodes
             ):
                 output = {
-                    "summary": "📧 Email Summary: This is a demonstration email with medium priority. The sender has provided important information that requires review. Action: Please review the extracted data and proceed with next steps. (Demo Mode - Install Ollama for real AI)"
+                    "summary": (
+                        "📧 Email Summary: This is a demonstration email with medium priority. "
+                        "The sender has provided important information that requires review. "
+                        "Action: Please review the extracted data and proceed with next steps. "
+                        "(Demo Mode - Install Ollama for real AI)"
+                    )
                 }
             else:
                 output = {
-                    "content": "Generated content based on the input. This is a demonstration of the content generation capability. In production, this would use AI to generate comprehensive, contextual content. (Demo Mode - Install Ollama for real AI)"
+                    "content": (
+                        "Generated content based on the input. "
+                        "This is a demonstration of the content generation capability. "
+                        "In production, this would use AI to generate comprehensive, "
+                        "contextual content. (Demo Mode - Install Ollama for real AI)"
+                    )
                 }
         elif node_type == "researcher":
             output = {
@@ -96,7 +106,10 @@ def generate_demo_workflow_results(
         "results": results,
         "final_output": node_outputs.get(nodes[-1]["id"]) if nodes else {},
         "demo_mode": True,
-        "message": "⚠️ DEMO MODE: Workflow executed with simulated results. Install and run Ollama (ollama.ai) for real AI processing.",
+        "message": (
+            "⚠️ DEMO MODE: Workflow executed with simulated results. "
+            "Install and run Ollama (ollama.ai) for real AI processing."
+        ),
     }
 
 

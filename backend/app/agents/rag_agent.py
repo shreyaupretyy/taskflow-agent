@@ -40,10 +40,15 @@ class RAGAgent(BaseAgent):
             length_function=len,
         )
 
-        self.system_prompt = """You are a helpful AI assistant that answers questions based on provided context.
+        self.system_prompt = (
+            """You are a helpful AI assistant that answers questions """
+            """based on provided context."""
+        )
+        self.system_prompt += """
 
 Use ONLY the information from the provided context to answer the question.
-If the answer is not in the context, say "I don't have enough information in the provided documents to answer this question."
+If the answer is not in the context, say "I don't have enough information "
+"in the provided documents to answer this question."
 
 Format your response as follows:
 
@@ -218,7 +223,11 @@ class DocumentQAAgent(RAGAgent):
     def __init__(self):
         super().__init__()
         self.name = "DocumentQA"
-        self.system_prompt = """You are an expert document analyst that answers questions precisely based on uploaded documents.
+        self.system_prompt = (
+            """You are an expert document analyst that answers questions """
+            """precisely based on uploaded documents."""
+        )
+        self.system_prompt += """
 
 Analyze the provided context carefully and answer the question accurately.
 If the answer requires synthesizing information from multiple sources, do so clearly.

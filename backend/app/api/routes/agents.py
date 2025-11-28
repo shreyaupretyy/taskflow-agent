@@ -139,7 +139,10 @@ async def execute_agent(
                 "agent_id": request.agent_id,
                 "output": demo_result,
                 "demo_mode": True,
-                "message": "⚠️ Using demo mode - Ollama not connected. Install from https://ollama.ai and run 'ollama serve'",
+                "message": (
+                    "⚠️ Using demo mode - Ollama not connected. "
+                    "Install from https://ollama.ai and run 'ollama serve'"
+                ),
             }
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -151,7 +154,10 @@ def generate_demo_agent_result(agent_id: str, input_text: str) -> Dict[str, Any]
             "agent": "Extractor",
             "status": "success",
             "data": {
-                "summary": "📧 Email Summary: High priority message requiring action. Key points extracted and categorized.",
+                "summary": (
+                    "\ud83d\udce7 Email Summary: High priority message requiring action. "
+                    "Key points extracted and categorized."
+                ),
                 "extracted_data": {
                     "sender": "demo@example.com",
                     "priority": "High",
@@ -171,9 +177,17 @@ def generate_demo_agent_result(agent_id: str, input_text: str) -> Dict[str, Any]
             "status": "success",
             "data": {
                 "title": "Generated Content Based on Your Input",
-                "content": "This is a professionally generated article that addresses your topic. In a real scenario with Ollama running, this would be a comprehensive, well-researched piece tailored to your specific requirements. The AI would analyze your input, research the topic, and create engaging content with proper structure, introduction, body paragraphs, and conclusion.",
+                "content": (
+                    "This is a professionally generated article that addresses your topic. "
+                    "In a real scenario with Ollama running, this would be a comprehensive, "
+                    "well-researched piece tailored to your specific requirements. "
+                    "The AI would analyze your input, research the topic, and create engaging "
+                    "content with proper structure, introduction, body paragraphs, and conclusion."
+                ),
                 "word_count": 250,
-                "summary": "Professional content addressing your specified topic and requirements",
+                "summary": (
+                    "Professional content addressing your specified topic and requirements"
+                ),
             },
         },
         "data-analyzer": {
@@ -202,18 +216,18 @@ def generate_demo_agent_result(agent_id: str, input_text: str) -> Dict[str, Any]
             "agent": "Writer",
             "status": "success",
             "data": {
-                "response": """Thank you for reaching out to us. I understand your concern and sincerely apologize for any inconvenience this has caused.
-
-I've reviewed your inquiry and here's how we can help:
-
-1. **Immediate Action**: [Specific solution based on the issue]
-2. **Alternative Options**: [Backup solutions if needed]
-3. **Follow-up**: We'll monitor this to ensure resolution
-
-Your satisfaction is our priority, and we're committed to resolving this promptly. Please let me know if you have any questions or need further assistance.
-
-Best regards,
-Customer Support Team""",
+                "response": (
+                    "Thank you for reaching out to us. "
+                    "I understand your concern and sincerely apologize "
+                    "for any inconvenience this has caused.\n\n"
+                    "I've reviewed your inquiry and here's how we can help:\n\n"
+                    "1. **Immediate Action**: [Specific solution based on the issue]\n"
+                    "2. **Alternative Options**: [Backup solutions if needed]\n"
+                    "3. **Follow-up**: We'll monitor this to ensure resolution\n\n"
+                    "Your satisfaction is our priority, and we're committed to resolving this promptly. "
+                    "Please let me know if you have any questions or need further assistance.\n\n"
+                    "Best regards,\nCustomer Support Team"
+                ),
                 "analysis": {
                     "issue_type": "General Inquiry",
                     "priority": "Medium",

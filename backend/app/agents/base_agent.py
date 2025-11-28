@@ -108,7 +108,11 @@ class ExtractorAgent(BaseAgent):
 
     def __init__(self):
         super().__init__("Extractor")
-        self.system_prompt = """You are an email analysis agent. Analyze the email and provide a comprehensive, well-formatted summary.
+        self.system_prompt = (
+            """You are an email analysis agent. """
+            """Analyze the email and provide a comprehensive, well-formatted summary."""
+        )
+        self.system_prompt += """
 
 Format your response as follows:
 
@@ -151,7 +155,11 @@ class WriterAgent(BaseAgent):
 
     def __init__(self):
         super().__init__("Writer")
-        self.system_prompt = """You are a professional content writer. Create engaging, well-structured content based on the given task.
+        self.system_prompt = (
+            """You are a professional content writer. """
+            """Create engaging, well-structured content based on the given task."""
+        )
+        self.system_prompt += """
 
 Format your response as follows:
 
@@ -193,7 +201,11 @@ class AnalyzerAgent(BaseAgent):
 
     def __init__(self):
         super().__init__("Analyzer")
-        self.system_prompt = """You are an expert code reviewer. Review the code and provide the corrected version with a brief summary.
+        self.system_prompt = (
+            """You are an expert code reviewer. """
+            """Review the code and provide the corrected version with a brief summary."""
+        )
+        self.system_prompt += """
 
 Format your response as follows:
 
