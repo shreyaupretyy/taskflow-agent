@@ -59,10 +59,10 @@ class EmailService:
 
         body = f"""
         Your workflow '{workflow_name}' has {execution_status}.
-        
+
         Execution ID: {execution_id}
         Status: {execution_status}
-        
+
         View details in your TaskFlow Agent dashboard.
         """
 

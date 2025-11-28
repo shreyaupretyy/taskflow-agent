@@ -1,7 +1,7 @@
 """Environment configuration validation."""
 
 import os
-from typing import Optional
+
 
 
 class ConfigValidator:

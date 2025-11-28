@@ -1,4 +1,3 @@
-import asyncio
 from datetime import datetime
 from typing import Any, Dict, List
 
@@ -14,7 +13,6 @@ from app.models.workflow import Workflow, WorkflowExecution
 from app.schemas.workflow import (
     WorkflowCreate,
     WorkflowExecutionCreate,
-    WorkflowExecutionDetailResponse,
     WorkflowExecutionResponse,
     WorkflowResponse,
     WorkflowUpdate,

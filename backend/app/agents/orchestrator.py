@@ -1,8 +1,5 @@
-import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
-from langchain.schema import BaseMessage, HumanMessage
-from langgraph.graph import END, StateGraph
 
 from app.agents.base_agent import create_agent
 
@@ -137,11 +134,14 @@ class MultiAgentOrchestrator:
         method = config.get("method", "GET")
         url = config.get("url", "")
         headers = config.get("headers", {})
-        body = config.get("body")
+        body_data = config.get("body")
 
         async with httpx.AsyncClient() as client:
             response = await client.request(
-                method=method, url=url, headers=headers, json=body if body else None
+                method=method,
+                url=url,
+                headers=headers,
+                json=body_data if body_data else None,
             )
 
             return {
@@ -218,7 +218,7 @@ class MultiAgentOrchestrator:
         config = node_data.get("config", {})
         to = config.get("to")
         subject = config.get("subject")
-        body = config.get("body")
+        _ = config.get("body")
 
         return {
             "sent": True,

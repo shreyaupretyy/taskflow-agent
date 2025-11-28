@@ -1,6 +1,6 @@
 """Workflow validator utilities."""
 
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List
 
 
 class WorkflowValidator:

@@ -1,4 +1,3 @@
-import os
 import pickle
 from pathlib import Path
 from typing import Any, Dict, List
@@ -9,7 +8,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 from app.agents.base_agent import BaseAgent
-from app.core.config import settings
 
 
 class RAGAgent(BaseAgent):

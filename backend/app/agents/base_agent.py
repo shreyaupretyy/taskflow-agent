@@ -1,8 +1,7 @@
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 from langchain.memory import ConversationBufferMemory
-from langchain.schema import HumanMessage, SystemMessage
 from langchain_community.llms import Ollama
 
 from app.core.config import settings
@@ -55,7 +54,7 @@ class BaseAgent:
                 json_str = response.strip()
 
             return json.loads(json_str)
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError:
             # If parsing fails, try to extract JSON from text
             import re
 
@@ -63,7 +62,7 @@ class BaseAgent:
             if json_match:
                 try:
                     return json.loads(json_match.group())
-                except:
+                except json.JSONDecodeError:
                     pass
             # Last resort: return structured error
             return {"error": "Failed to parse response", "raw_response": response}

@@ -3,7 +3,7 @@ Model comparison endpoint for A/B testing different LLMs.
 """
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel

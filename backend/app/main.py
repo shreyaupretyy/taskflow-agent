@@ -1,3 +1,4 @@
+import os
 import time
 
 from fastapi import FastAPI, Request
@@ -8,8 +9,9 @@ from app.api.routes import agents, api_keys, auth, documents, executions, models
 from app.core.config import settings
 from app.core.database import Base, engine
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables (skip in testing)
+if not os.getenv("TESTING"):
+    Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -78,13 +80,13 @@ async def health_check():
 async def startup_event():
     """Startup event handler."""
     print(f"Starting {settings.PROJECT_NAME} v{settings.VERSION}")
-    print(f"API documentation available at /docs")
+    print("API documentation available at /docs")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
     """Shutdown event handler."""
-    print(f"Shutting down {settings.PROJECT_NAME}")
+    print("Shutting down " + settings.PROJECT_NAME)
 
 
 if __name__ == "__main__":

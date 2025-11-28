@@ -1,7 +1,7 @@
 import time
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -119,7 +119,7 @@ async def execute_agent(
                 success=False,
                 error_message=str(e),
             )
-        except:
+        except Exception:
             pass  # Don't fail if metrics recording fails
 
         # Log the error for debugging
