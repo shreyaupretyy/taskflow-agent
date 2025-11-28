@@ -4,15 +4,15 @@ import { useState, useEffect } from 'react';
 import { workflowApi } from '@/lib/api';
 
 export function useWorkflows() {
-  const [workflows, setWorkflows] = useState([]);
+  const [workflows, setWorkflows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchWorkflows = async () => {
     try {
       setLoading(true);
-      const data = await workflowApi.list();
-      setWorkflows(data);
+      const response = await workflowApi.list();
+      setWorkflows(response.data);
       setError(null);
     } catch (err: any) {
       setError(err.message);
@@ -27,9 +27,9 @@ export function useWorkflows() {
 
   const createWorkflow = async (workflow: any) => {
     try {
-      const data = await workflowApi.create(workflow);
-      setWorkflows([...workflows, data]);
-      return data;
+      const response = await workflowApi.create(workflow);
+      setWorkflows([...workflows, response.data]);
+      return response.data;
     } catch (err: any) {
       setError(err.message);
       throw err;
@@ -38,9 +38,9 @@ export function useWorkflows() {
 
   const updateWorkflow = async (id: string, workflow: any) => {
     try {
-      const data = await workflowApi.update(id, workflow);
-      setWorkflows(workflows.map((w: any) => w.id === id ? data : w));
-      return data;
+      const response = await workflowApi.update(parseInt(id), workflow);
+      setWorkflows(workflows.map((w: any) => w.id === parseInt(id) ? response.data : w));
+      return response.data;
     } catch (err: any) {
       setError(err.message);
       throw err;
@@ -49,8 +49,8 @@ export function useWorkflows() {
 
   const deleteWorkflow = async (id: string) => {
     try {
-      await workflowApi.delete(id);
-      setWorkflows(workflows.filter((w: any) => w.id !== id));
+      await workflowApi.delete(parseInt(id));
+      setWorkflows(workflows.filter((w: any) => w.id !== parseInt(id)));
     } catch (err: any) {
       setError(err.message);
       throw err;
@@ -69,15 +69,15 @@ export function useWorkflows() {
 }
 
 export function useWorkflowExecutions(workflowId?: string) {
-  const [executions, setExecutions] = useState([]);
+  const [executions, setExecutions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchExecutions = async () => {
     try {
       setLoading(true);
-      const data = await workflowApi.getExecutions(workflowId);
-      setExecutions(data);
+      const response = await workflowApi.listExecutions(parseInt(workflowId!));
+      setExecutions(response.data);
       setError(null);
     } catch (err: any) {
       setError(err.message);
@@ -94,9 +94,9 @@ export function useWorkflowExecutions(workflowId?: string) {
 
   const executeWorkflow = async (id: string, context?: any) => {
     try {
-      const data = await workflowApi.execute(id, context);
-      setExecutions([data, ...executions]);
-      return data;
+      const response = await workflowApi.execute(parseInt(id), context);
+      setExecutions([response.data, ...executions]);
+      return response.data;
     } catch (err: any) {
       setError(err.message);
       throw err;

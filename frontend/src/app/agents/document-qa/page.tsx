@@ -199,7 +199,7 @@ export default function DocumentQAPage() {
             <CardContent className="space-y-4">
               <Textarea
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setQuery(e.target.value)}
                 placeholder="What are the main findings in the documents?"
                 rows={6}
                 className="resize-none"

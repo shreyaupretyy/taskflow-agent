@@ -7,21 +7,13 @@ import MetricsDashboard from '@/components/MetricsDashboard'
 
 export default function MetricsPage() {
   const router = useRouter()
-  const { user, isLoading } = useAuthStore()
+  const { user } = useAuthStore()
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!user) {
       router.push('/auth/login')
     }
-  }, [user, isLoading, router])
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    )
-  }
+  }, [user, router])
 
   if (!user) {
     return null

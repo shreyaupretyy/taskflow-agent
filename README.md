@@ -1,53 +1,60 @@
 # TaskFlow Agent
 
-> AI-Powered Agent Platform for Business Automation
+> AI-Powered Multi-Agent Platform with RAG Capabilities
 
-An intelligent AI agent platform that provides pre-built AI agents for common business tasks including email analysis, content generation, data analysis, code review, customer support, and meeting notes.
+An intelligent AI agent platform that combines multiple specialized agents with document Q&A capabilities using Retrieval Augmented Generation (RAG). Upload documents, ask questions, and get AI-powered insights from your data.
 
 [![GitHub](https://img.shields.io/badge/GitHub-TaskFlow_Agent-blue?logo=github)](https://github.com/shreyaupretyy/taskflow-agent)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Overview
 
-TaskFlow Agent simplifies business automation by providing ready-to-use AI agents powered by Ollama and LLaMA 3.2. No workflow building required - just select an agent, provide your input, and get instant AI-generated results.
+TaskFlow Agent simplifies AI automation by providing pre-built AI agents and document intelligence powered by local LLMs (Ollama with LLaMA 3.2). Upload PDFs, ask questions using semantic search, compare model outputs, and track performance metrics - all without external API costs.
 
-## Features
+## Key Features
 
-### Pre-Built AI Agents
+### AI Agents
+- **Email Summarizer** - Extract key information, action items, and priorities
+- **Content Generator** - Create professional articles, blogs, and marketing copy
+- **Data Analyzer** - Analyze data and provide actionable insights
+- **Code Reviewer** - Review and fix code with detailed explanations
+- **Customer Support** - Generate professional support responses
+- **Meeting Notes** - Convert transcripts into structured action items
 
-- **Email Summarizer** - Analyze emails and extract key information, action items, and priorities
-- **Content Generator** - Create professional content including articles, blogs, and marketing copy
-- **Data Analyzer** - Analyze data and provide insights, patterns, and recommendations
-- **Code Reviewer** - Review code and provide corrected versions with fixes
-- **Customer Support** - Generate professional customer support responses
-- **Meeting Notes** - Convert meeting transcripts into structured notes with action items
-- **Document Q&A (RAG)** - Upload documents and ask questions using Retrieval Augmented Generation
+### Document Q&A (RAG)
+- Upload **PDF, TXT, MD** files
+- Semantic search with **FAISS** vector database
+- Ask questions in natural language
+- Get answers with source citations
+- Local embeddings (no external API calls)
 
-### Advanced AI Capabilities
-
-- **Multiple Model Support** - Compare responses from different LLMs (llama3.2, mistral, etc.)
-- **Vector Search (ChromaDB)** - Semantic search across uploaded documents with local embeddings
-- **Performance Metrics** - Track response times, token usage, and success rates for each agent
-- **Quality Ratings** - Rate agent responses and provide feedback to improve performance
-- **Real-time Analytics** - Monitor agent usage patterns and performance trends
-
-### Key Capabilities
-
-- Real AI processing with Ollama (LLaMA 3.2)
-- Clean, professional UI without distractions
-- Human-readable reports (not JSON)
-- Fast response times (3-8 seconds after first load)
-- Secure JWT authentication
-- Copy results to clipboard
-- Demo mode fallback when Ollama is unavailable
-- Model comparison for A/B testing
-- Comprehensive metrics tracking
-- CI/CD pipeline with automated testing
+### Advanced Features
+- **Model Comparison** - A/B test different LLMs
+- **Metrics Dashboard** - Track performance and usage
+- **Quality Ratings** - Rate responses to improve results
+- **Real-time Analytics** - Monitor agent performance trends
 
 ## Screenshots
 
 ### Dashboard
 ![Dashboard](uploads/dashboard.png)
+*Main dashboard with agent selection and quick actions*
+
+### Document Q&A (RAG)
+![RAG System](uploads/rag.png)
+*Upload documents and ask questions with semantic search*
+
+### Email Summarizer
+![Email Summarizer](uploads/email_summarizer.png)
+
+### Content Generator
+![Content Generator](uploads/content_generator.png)
+
+### Data Analyzer
+![Data Analyzer](uploads/data_analyzer.png)
+
+### Code Reviewer
+![Code Reviewer](uploads/code_reviewer.png)
 
 ### Email Summarizer
 ![Email Summarizer](uploads/email_summarizer.png)
@@ -64,22 +71,21 @@ TaskFlow Agent simplifies business automation by providing ready-to-use AI agent
 ## Technology Stack
 
 ### Backend
-- **FastAPI** - High-performance async API framework
+- **FastAPI** - High-performance async Python web framework
 - **SQLAlchemy** - ORM with SQLite database
-- **Ollama** - Local LLM inference (LLaMA 3.2, Mistral, and more)
-- **LangChain** - LLM framework for agent orchestration
-- **ChromaDB** - Vector database for RAG and semantic search
-- **HuggingFace Embeddings** - Sentence transformers for document embeddings
-- **Argon2** - Password hashing
-- **JWT** - Secure authentication
-- **Pytest** - Comprehensive test coverage
+- **LangChain** - Agent orchestration framework
+- **Ollama** - Local LLM inference (LLaMA 3.2)
+- **FAISS** - Vector database for semantic search
+- **pypdf** - PDF text extraction
+- **sentence-transformers** - Document embeddings (all-MiniLM-L6-v2)
+- **Pytest** - Testing framework
 
 ### Frontend
 - **Next.js 14** - React framework with App Router
 - **TypeScript** - Type-safe development
-- **Tailwind CSS** - Modern styling
-- **Zustand** - State management
-- **shadcn/ui** - UI components
+- **Tailwind CSS** - Utility-first styling
+- **Zustand** - Lightweight state management
+- **shadcn/ui** - Modern UI components
 
 ## Quick Start
 

@@ -49,6 +49,36 @@ def client(db):
 
 
 @pytest.fixture
+def auth_headers(client, db):
+    """Create authenticated user and return authorization headers."""
+    from app.models.user import User
+    from app.core.security import get_password_hash
+    
+    # Create test user
+    user = User(
+        email="testuser@example.com",
+        hashed_password=get_password_hash("testpass123"),
+        full_name="Test User"
+    )
+    db.add(user)
+    db.commit()
+    
+    # Login to get token
+    response = client.post(
+        "/api/v1/auth/login",
+        data={"username": "testuser@example.com", "password": "testpass123"}
+    )
+    
+    if response.status_code != 200:
+        # Fallback if auth routes not available
+        return {"Authorization": "Bearer test_token"}
+    
+    token = response.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
+
+@pytest.fixture
 def mock_ollama():
     """Mock Ollama for testing without actual LLM calls."""
     def mock_invoke(prompt):
