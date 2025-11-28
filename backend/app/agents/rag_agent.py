@@ -1,6 +1,8 @@
 from typing import Dict, Any, List
-import chromadb
-from chromadb.config import Settings
+import faiss
+import numpy as np
+import pickle
+from pathlib import Path
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from app.agents.base_agent import BaseAgent
@@ -14,16 +16,21 @@ class RAGAgent(BaseAgent):
     def __init__(self):
         super().__init__("RAG")
         
-        # Initialize ChromaDB client
-        self.chroma_client = chromadb.Client(Settings(
-            anonymized_telemetry=False,
-            allow_reset=True
-        ))
+        # Directory to store FAISS indices
+        self.index_dir = Path("data/faiss_indices")
+        self.index_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Dictionary to hold FAISS indices in memory
+        self.indices = {}
+        self.document_stores = {}
+        
+        # Check for GPU availability
+        self.use_gpu = self._has_cuda()
         
         # Initialize embeddings model (free, local)
         self.embeddings = HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2",
-            model_kwargs={'device': 'cpu'}
+            model_kwargs={'device': 'cuda' if self.use_gpu else 'cpu'}
         )
         
         # Text splitter for chunking documents
@@ -49,14 +56,46 @@ SOURCES
 CONFIDENCE
 [High/Medium/Low based on how well the context supports your answer]"""
     
-    def add_documents(self, collection_name: str, documents: List[str], metadatas: List[Dict] = None) -> int:
-        """Add documents to a ChromaDB collection."""
+    def _has_cuda(self) -> bool:
+        """Check if CUDA is available for GPU acceleration."""
         try:
-            # Get or create collection
-            collection = self.chroma_client.get_or_create_collection(
-                name=collection_name,
-                metadata={"description": "User document collection"}
-            )
+            import torch
+            return torch.cuda.is_available()
+        except ImportError:
+            return False
+    
+    def _get_or_create_index(self, collection_name: str):
+        """Get or create a FAISS index for a collection."""
+        if collection_name not in self.indices:
+            index_path = self.index_dir / f"{collection_name}.index"
+            docs_path = self.index_dir / f"{collection_name}.pkl"
+            
+            if index_path.exists() and docs_path.exists():
+                # Load existing index
+                self.indices[collection_name] = faiss.read_index(str(index_path))
+                with open(docs_path, 'rb') as f:
+                    self.document_stores[collection_name] = pickle.load(f)
+            else:
+                # Create new index (384 is the dimension for all-MiniLM-L6-v2)
+                self.indices[collection_name] = faiss.IndexFlatL2(384)
+                self.document_stores[collection_name] = []
+        
+        return self.indices[collection_name], self.document_stores[collection_name]
+    
+    def _save_index(self, collection_name: str):
+        """Save FAISS index and document store to disk."""
+        if collection_name in self.indices:
+            index_path = self.index_dir / f"{collection_name}.index"
+            docs_path = self.index_dir / f"{collection_name}.pkl"
+            
+            faiss.write_index(self.indices[collection_name], str(index_path))
+            with open(docs_path, 'wb') as f:
+                pickle.dump(self.document_stores[collection_name], f)
+    
+    def add_documents(self, collection_name: str, documents: List[str], metadatas: List[Dict] = None) -> int:
+        """Add documents to a FAISS index."""
+        try:
+            index, doc_store = self._get_or_create_index(collection_name)
             
             # Split documents into chunks
             all_chunks = []
@@ -72,19 +111,22 @@ CONFIDENCE
                     all_metadatas.append({
                         **doc_metadata,
                         "chunk_index": chunk_idx,
-                        "doc_index": idx
+                        "doc_index": idx,
+                        "content": chunk
                     })
             
-            # Generate embeddings and add to collection
+            # Generate embeddings
             embeddings = [self.embeddings.embed_query(chunk) for chunk in all_chunks]
+            embeddings_array = np.array(embeddings).astype('float32')
             
-            # Add to ChromaDB
-            collection.add(
-                embeddings=embeddings,
-                documents=all_chunks,
-                metadatas=all_metadatas,
-                ids=[f"doc_{i}" for i in range(len(all_chunks))]
-            )
+            # Add to FAISS index
+            index.add(embeddings_array)
+            
+            # Store documents with metadata
+            doc_store.extend(all_metadatas)
+            
+            # Save to disk
+            self._save_index(collection_name)
             
             return len(all_chunks)
         except Exception as e:
@@ -92,27 +134,30 @@ CONFIDENCE
             raise
     
     def search_documents(self, collection_name: str, query: str, n_results: int = 5) -> List[Dict]:
-        """Search for relevant documents."""
+        """Search for relevant documents using FAISS."""
         try:
-            collection = self.chroma_client.get_collection(name=collection_name)
+            index, doc_store = self._get_or_create_index(collection_name)
+            
+            if index.ntotal == 0:
+                return []
             
             # Generate query embedding
             query_embedding = self.embeddings.embed_query(query)
+            query_vector = np.array([query_embedding]).astype('float32')
             
             # Search
-            results = collection.query(
-                query_embeddings=[query_embedding],
-                n_results=n_results
-            )
+            n_results = min(n_results, index.ntotal)
+            distances, indices = index.search(query_vector, n_results)
             
             # Format results
             documents = []
-            if results['documents'] and len(results['documents']) > 0:
-                for i, doc in enumerate(results['documents'][0]):
+            for i, idx in enumerate(indices[0]):
+                if idx < len(doc_store):
+                    doc = doc_store[idx]
                     documents.append({
-                        "content": doc,
-                        "metadata": results['metadatas'][0][i] if results['metadatas'] else {},
-                        "distance": results['distances'][0][i] if results['distances'] else None
+                        "content": doc.get("content", ""),
+                        "metadata": {k: v for k, v in doc.items() if k != "content"},
+                        "distance": float(distances[0][i])
                     })
             
             return documents
